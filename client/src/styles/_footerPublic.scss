@@ -1,0 +1,27 @@
+.footer {
+  padding: 0.5rem;
+  > .footer-text {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: rgb(107, 114, 128);
+    text-align: center;
+  }
+  > .footer-list {
+    @include flex(row, center, center, 0);
+    flex-wrap: wrap;
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    color: rgb(107, 114, 128);
+    list-style: none;
+    > li {
+      > .footer-list-item {
+        margin-inline-end: 1.5rem;
+        &:hover {
+          text-decoration-line: underline;
+        }
+      }
+    }
+  }
+}

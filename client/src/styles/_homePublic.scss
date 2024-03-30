@@ -1,0 +1,54 @@
+.home-page {
+  background-color: rgb(255, 237, 213);
+  max-width: 64rem;
+  margin: auto;
+  text-align: center;
+  padding: 2rem;
+  > .title {
+    margin-bottom: 3rem;
+    font-size: 3.75rem;
+    line-height: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: rgb(17, 24, 39);
+  }
+  > .sub-title-1 {
+    margin-bottom: 2rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 400;
+    color: rgb(107, 114, 128);
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+  > .sub-title-2 {
+    margin-bottom: 2rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 800;
+    color: rgb(107, 114, 128);
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+  > hr {
+    margin-bottom: 2rem;
+    border: 0.1rem solid rgb(209, 213, 219);
+  }
+  > .content {
+    @include grid(auto auto auto, 1rem, unset);
+    padding: 10px;
+    > .content-item {
+      @include flex(row, center, center, 0);
+      font-size: 1rem;
+      line-height: 1.25rem;
+      color: rgb(59, 130, 246);
+      font-weight: 600;
+      &:hover {
+        color: rgb(29, 78, 216);
+      }
+      > .content-item-icon {
+        margin-right: 0.3rem;
+      }
+    }
+  }
+}

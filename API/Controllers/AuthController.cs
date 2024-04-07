@@ -45,7 +45,7 @@ namespace API.Controllers
             {
                 return BadRequest("Email not found");
             }
-            if(!_authService.VarifyPasswordHash(request.Password, currentUser.PasswordHash, currentUser.PasswordSalt))
+            if (!_authService.VarifyPasswordHash(request.Password, currentUser.PasswordHash, currentUser.PasswordSalt))
             {
                 return BadRequest("Wrong password");
             }
@@ -53,12 +53,28 @@ namespace API.Controllers
             return Ok(token);
         }
 
+        [HttpPost("google")]
+        public async Task<IActionResult> Google([FromBody] GoogleDto request)
+        {
+            var checkUser = await _authService.GetUserByEmail(request.Email);
+            if (checkUser == null)
+            {
+                await _authService.CreateGoogleUser(request);
+            }
+            var user = await _authService.GetUserByEmail(request.Email);
+            string token = CreateToken(user);
+            return Ok(token);
+        }
+
         private string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
+                new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User"),
+                new Claim("username", user.Username),
+                new Claim("email", user.Email),
+                new Claim("role", user.IsAdmin ? "Admin" : "User"),
+                new Claim("image", user.ImageUrl)
             };
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
                 _configuration.GetSection("AppSettings:Token").Value));

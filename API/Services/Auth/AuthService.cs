@@ -36,10 +36,6 @@ namespace API.Services.Auth
                 return computedHash.SequenceEqual(passwordHash);
             }
         }
-        public async Task<bool> CheckPassword(string password)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<bool> CheckUsername(string username)
         {
@@ -61,9 +57,20 @@ namespace API.Services.Auth
             return true;
         }
 
-        public async Task<bool> CheckLoginPassword(string password)
+        public async Task<bool> CreateGoogleUser(GoogleDto model)
         {
-            throw new NotImplementedException();
+            CreatePasswordHash(model.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            var userToAdd = new User
+            {
+                Username = model.Username,
+                Email = model.Email,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                ImageUrl = model.ImageUrl
+            };
+            await _context.Users.AddAsync(userToAdd);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<User> GetUserByEmail(string email)

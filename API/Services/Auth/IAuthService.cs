@@ -10,8 +10,7 @@ namespace API.Services.Auth
         bool VarifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt);
         Task<bool> CheckUsername(string username);
         Task<bool> CheckEmail(string email);
-        Task<bool> CheckPassword(string password);
-        Task<bool> CheckLoginPassword(string password);
+        Task<bool> CreateGoogleUser(GoogleDto model);
         Task<bool> CreateUser(RegisterDto model);
         Task<User> GetUserByEmail(string email);
     }

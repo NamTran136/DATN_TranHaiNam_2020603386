@@ -1,0 +1,91 @@
+.topnav {
+  @include flex(row, space-between, center, 0);
+  .logo {
+    .logo-container {
+      @include flex(row, center, center, 0);
+      .logo-image {
+        height: 2.5rem;
+        width: 3rem;
+        border-radius: 100%;
+        object-fit: cover;
+      }
+      .logo-text {
+        font-family: "Archivo", sans-serif;
+      }
+    }
+  }
+  .nav {
+    float: left;
+    cursor: pointer;
+    list-style: none;
+  }
+  .nav .nav-item {
+    position: relative;
+    float: left;
+    margin: 0 2rem;
+  }
+  .nav .nav-item .nav-item-text {
+    @include flex(row, center, center, 0);
+  }
+  .nav .nav-link {
+    display: block;
+    color: rgb(37, 99, 235);
+    text-decoration: none;
+  }
+
+  .nav__sub-menu {
+    min-width: 12rem;
+    padding-top: 0.5rem;
+    border: 0.1rem solid rgb(209, 213, 219);
+    list-style: none;
+    position: absolute;
+    left: -9999px; /* Hide off-screen when not needed (this is more accessible than display:none;) */
+  }
+
+  .nav__sub-menu li {
+    float: none;
+    width: 100%;
+  }
+
+  .nav__sub-menu .nav__sub-menu-item {
+    display: inline-block;
+    width: 100%;
+    color: rgb(0, 0, 0);
+  }
+  .nav li:hover .nav-link {
+    color: rgb(30, 64, 175);
+  }
+  .nav li:hover ul {
+    /* Display the dropdown on hover */
+    left: 0;
+    background-color: rgb(255, 255, 255);
+    padding-bottom: 0.2rem;
+  }
+
+  .nav li:hover .nav__sub-menu li .nav__sub-menu-item {
+    /* Display the dropdown on hover */
+    margin-bottom: 0.2rem;
+    padding: 0.2rem;
+  }
+
+  .nav li:hover ul li .nav__sub-menu-item:hover {
+    /* Here we define the most explicit hover states--what happens when you hover each individual link. */
+    background-color: rgb(209, 213, 219);
+  }
+
+  > .auth-container {
+    .btn-signin {
+      background-color: rgb(47, 122, 252);
+      color: rgb(255, 255, 255);
+      margin-top: 0.5rem /* 8px */;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem 1.25rem;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      &:hover {
+        background-color: rgb(135, 172, 236);
+      }
+    }
+  }
+}

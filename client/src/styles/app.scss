@@ -1,0 +1,124 @@
+@import "mixin";
+@import "headerPublic";
+@import "footerPublic";
+@import "homePublic";
+@import "allBookPublic";
+@import "bookPublic";
+@import "signinSignup";
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.red {
+  color: rgb(255, 0, 0);
+}
+
+.bg-red {
+  background-color: rgb(255, 0, 0);
+}
+
+.orange {
+  color: rgb(255, 165, 0);
+}
+
+.blue {
+  color: rgb(47, 0, 255);
+}
+
+.bg-blue {
+  background-color: rgb(47, 0, 255);
+}
+.green {
+  color: rgb(0, 195, 0);
+}
+
+.text-white {
+  color: rgb(255, 255, 255) !important;
+}
+
+.rotate-180 {
+  rotate: 180deg;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+// Public
+.header {
+  padding: 0.5rem 5rem;
+}
+
+.public-container {
+  max-width: 64rem;
+  min-height: 90vh;
+  background-color: rgb(255, 237, 213);
+  margin: auto;
+  padding: 2rem;
+  color: rgb(0, 0, 0);
+  text-align: center;
+}
+
+// Introduction
+.introduction {
+  background-color: rgb(220, 252, 231);
+  padding: 0.5rem 5rem;
+  text-align: center;
+  margin: 1rem auto;
+  max-width: 64rem;
+  color: rgb(22, 163, 74);
+}
+
+// Title
+.generalTitle {
+  color: rgb(255, 255, 255);
+  background-color: rgb(249, 115, 22);
+  padding: 0.5rem 0.75rem;
+}
+
+// Sub Item
+.generalSubItem {
+  border: 0.125rem solid rgb(209, 213, 219);
+}
+.generalSubItem .generalSubItem-text {
+  padding: 3rem;
+  text-align: justify;
+}
+
+// Menu
+.menu {
+  border: 0.125rem solid rgb(209, 213, 219);
+  > .menu-content {
+    padding-left: 0.75rem /* 12px */;
+    padding-right: 0.75rem /* 12px */;
+    text-align: justify;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+
+    > .menu-item {
+      @include flex(row, flex-start, center, 0);
+      margin-bottom: 0.5rem;
+      color: rgb(59, 130, 246);
+      &:hover {
+        color: rgb(29, 78, 216);
+      }
+    }
+  }
+}

@@ -13,5 +13,6 @@ namespace API.Services.Auth
         Task<bool> CreateGoogleUser(GoogleDto model);
         Task<bool> CreateUser(RegisterDto model);
         Task<User> GetUserByEmail(string email);
+        int Update(UserToEditDto dto);
     }
 }

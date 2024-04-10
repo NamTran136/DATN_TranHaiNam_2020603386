@@ -1,6 +1,7 @@
 ﻿using API.DTOs;
 using API.Entities;
 using API.Services.Auth;
+using Azure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -65,7 +66,22 @@ namespace API.Controllers
             string token = CreateToken(user);
             return Ok(token);
         }
-
+        [HttpPut]
+        public async Task<IActionResult> Update(UserToEditDto model)
+        {
+            var check = _authService.Update(model);
+            switch (check)
+            {
+                case 1:
+                    return NotFound();
+                case 2:
+                    return BadRequest("Username should be unique.");
+                default:
+                    var user = await _authService.GetUserByEmail(model.Email);
+                    string token = CreateToken(user);
+                    return Ok(token);
+            }
+        }
         private string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>

@@ -57,6 +57,35 @@ namespace API.Services.Auth
             return true;
         }
 
+        public int Update(UserToEditDto dto)
+        {
+            var fetchedUser = _context.Users.FirstOrDefault(x => x.Email == dto.Email);
+            if (fetchedUser == null)
+            {
+                return 1;
+            }
+            if (fetchedUser.Username != dto.Username && UsernameExists(dto.Username))
+            {
+                return 2;
+            }
+
+            fetchedUser.Username = dto.Username;
+            if (!String.IsNullOrEmpty(dto.Password))
+            {
+                byte[] passwordHash, passwordSalt;
+                using (var hmac = new HMACSHA512())
+                {
+                    passwordSalt = hmac.Key;
+                    passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(dto.Password));
+                }
+                fetchedUser.PasswordHash = passwordHash;
+                fetchedUser.PasswordSalt = passwordSalt;
+            }
+            fetchedUser.ImageUrl = dto.ImageUrl;
+            _context.SaveChanges();
+            return 0;
+        }
+
         public async Task<bool> CreateGoogleUser(GoogleDto model)
         {
             CreatePasswordHash(model.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -81,6 +110,12 @@ namespace API.Services.Auth
                 return null;
             }
             return _user;
+        }
+        public bool UsernameExists(string username)
+        {
+            var fetchedUser = _context.Users.FirstOrDefault(x => x.Username == username);
+            if (fetchedUser == null) return false;
+            return true;
         }
     }
 }

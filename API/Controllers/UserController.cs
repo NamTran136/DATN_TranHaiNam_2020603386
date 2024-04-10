@@ -44,24 +44,16 @@ namespace API.Controllers
             }
             return Ok(user);
         }
-        [HttpPut]
-        public IActionResult Update(UserToEditDto model)
-        {
-            var check = _userService.Update(model);
-            switch (check)
-            {
-                case 1:
-                    return NotFound();
-                case 2:
-                    return BadRequest("Username should be unique.");
-                default:
-                    return NoContent();
-            }
-        }
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             return Ok(_userService.Delete(id));
+        }
+        [HttpDelete("email={email}")]
+        public IActionResult DeleteByEmail(string email)
+        {
+            return Ok(_userService.DeleteByEmail(email));
         }
     }
 }

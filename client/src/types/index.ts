@@ -51,7 +51,7 @@ export type ResponseLogin = {
   exp: number;
 };
 
-export type User = {
+export type UserEditDto = {
   username: string;
   email: string;
   password: string;

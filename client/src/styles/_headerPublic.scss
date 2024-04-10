@@ -74,17 +74,27 @@
   }
 
   > .auth-container {
-    .btn-signin {
-      background-color: rgb(47, 122, 252);
-      color: rgb(255, 255, 255);
-      margin-top: 0.5rem /* 8px */;
-      margin-bottom: 0.5rem;
-      padding: 0.5rem 1.25rem;
-      border-radius: 9999px;
-      border: none;
-      cursor: pointer;
-      &:hover {
-        background-color: rgb(135, 172, 236);
+    > a {
+      > .btn-signin {
+        background-color: rgb(47, 122, 252);
+        color: rgb(255, 255, 255);
+        margin-top: 0.5rem /* 8px */;
+        margin-bottom: 0.5rem;
+        padding: 0.5rem 1.25rem;
+        border-radius: 9999px;
+        border: none;
+        cursor: pointer;
+        &:hover {
+          background-color: rgb(135, 172, 236);
+        }
+      }
+      >.avatar {
+        height: 2rem/* 28px */;
+        width: 2rem/* 28px */;
+        border-radius: 9999px;
+        object-fit: cover;
+        padding: 0.1rem;
+        border: 1px solid rgb(209, 213, 219);
       }
     }
   }

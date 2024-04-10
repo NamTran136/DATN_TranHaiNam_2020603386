@@ -1,8 +1,9 @@
 import { Outlet, Navigate } from "react-router-dom";
+import { useAppSelector } from "../store/store";
 
 const protectedRoute = () => {
-  const token = localStorage.getItem("token");
-  return token ? <Outlet /> : <Navigate to="/signin" />;
+  const { user } = useAppSelector((state) => state.user);
+  return user.username !== "" ? <Outlet /> : <Navigate to="/signin" />;
 };
 
 export default protectedRoute;

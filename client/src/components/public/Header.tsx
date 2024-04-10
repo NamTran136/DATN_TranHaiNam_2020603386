@@ -1,37 +1,19 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { API_URL, CATEGORY, CategoryDto, User, USER, UserDto } from "../../types";
+import { API_URL, CATEGORY, CategoryDto } from "../../types";
 import axios from "axios";
 import { IoIosArrowDown } from "react-icons/io";
-import { jwtDecode } from "jwt-decode";
-import { GetUser } from "../../types/tools";
+import { useAppSelector } from "../../store/store";
 const header = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<CategoryDto[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const [isLoadingUser, setIsLoadingUser] = useState(false);
-  const [image, setImage] = useState<string>("");
-  const [errorUser, setErrorUser] = useState<string | null>(null);
-
-  const initialUser : UserDto = {
-    username: "",
-    email: "",
-    role: "",
-    image: "",
-  };
-
-  const [user, setUser] = useState<UserDto>(initialUser);
-
-  
+  const { user } = useAppSelector((state) => state.user);  
 
   useEffect(() => {
     fetchData();
-    const token = localStorage.getItem("token");
-    setUser(GetUser(token))
   }, []);
-  console.log(localStorage.getItem("token"));
-  console.log(user);
   const fetchData = () => {
     setIsLoading(true);
     axios
@@ -92,16 +74,10 @@ const header = () => {
         </ul>
         <div className="auth-container">
           <Link to="/profile">
-            {user !== initialUser ? (
-              <img
-                src={user.image}
-                alt={user.username}
-                className="h-7 w-7 rounded-full object-cover"
-              />
+            {user.username !== "" ? (
+              <img src={user.image} alt={user.username} className="avatar" />
             ) : (
-              <button className="bg-[rgb(166,193,238)] text-white md:my-0 my-2 px-5 py-2 rounded-full hover:bg-[rgb(135,172,236)]">
-                Đăng nhập
-              </button>
+              <button className="btn-signin">Đăng nhập</button>
             )}
           </Link>
         </div>

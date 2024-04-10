@@ -4,11 +4,12 @@ import { app } from "../../firebase";
 import axios from "axios";
 import { API_URL, AUTH, GoogleDto } from "../../types";
 import { useState } from "react";
+import { useAppDispatch } from "../../store/store";
+import { signInFailure, signInStart, signInSuccess } from "../../store/features/userSlice";
 
 export default function OAuth() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
   function generateRandomString(length: number) {
     const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let randomString = "";
@@ -34,7 +35,7 @@ export default function OAuth() {
         password: generateRandomString(36),
         imageUrl: result.user.photoURL ? result.user.photoURL : "",
       };
-      setLoading(true)
+      dispatch(signInStart());
       const { data, status } = await axios.post<string>(
         `${API_URL}${AUTH}/Google`,
         value,
@@ -46,18 +47,14 @@ export default function OAuth() {
         }
       );
       if (status !== 200) {
-        setError("Có lỗi xảy ra trong quá trình tải");
+        dispatch(signInFailure());
         return;
       }
-      else{
-        setError(null);
-      }
-      console.log(data)
       localStorage.setItem("token", data);
-      setLoading(false);
+      dispatch(signInSuccess(data));
       navigate("/");
     } catch (err) {
-      setError("Có lỗi xảy ra trong quá trình tải");
+      dispatch(signInFailure());
       console.log("Could not login with Google " + err);
     }
   };

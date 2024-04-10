@@ -3,13 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../../components/public/OAuth";
 import axios from "axios";
 import { AUTH, API_URL, LoginDto } from "../../types";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { signInFailure, signInStart, signInSuccess } from "../../store/features/userSlice";
 
 
 function signin() {
   const initialFormValues: LoginDto = { email: "", password: "" };
   const [formData, setFormData] = useState<LoginDto>(initialFormValues);
-const [loading, setLoading] = useState(false)
-const [error, setError] = useState<string | null>(null);
+const dispatch = useAppDispatch();
+
+const { loading, error } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -17,7 +20,7 @@ const [error, setError] = useState<string | null>(null);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      dispatch(signInStart());
       const { data, status } = await axios.post<string>(
         `${API_URL}${AUTH}/login`,
         formData,
@@ -29,19 +32,14 @@ const [error, setError] = useState<string | null>(null);
         }
       );
       if (status !== 200) {
-        setError("Email hoặc mật khẩu không chính xác.")
+        dispatch(signInFailure());
         return;
       }
-      else{
-        setError(null);
-      }
       localStorage.setItem("token", data);
-      setLoading(false);
-      
+      dispatch(signInSuccess(data));
       navigate("/");
     } catch (err: any) {
-      setError("Có lỗi xảy ra trong quá trình tải.");
-      console.log(err.message);
+      dispatch(signInFailure(err.message));
     }
   };
   return (

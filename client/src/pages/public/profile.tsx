@@ -7,7 +7,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../firebase";
-import { API_URL, AUTH, USER, UserDto, UserEditDto } from "../../types";
+import { API_URL, AUTH, USER, UserEditDto } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOut, updateUserFailure, updateUserStart, updateUserSuccess } from "../../store/features/userSlice";
 import axios from "axios";
@@ -27,7 +27,6 @@ export default function profile() {
   const [image, setImage] = useState<any | undefined>(undefined);
   const [imageError, setImageError] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
-  const [comfirmPassword, setComfirmPassword] = useState("");
   const [imagePercent, setImagePercent] = useState(0);
   useEffect(() => {
     if (image) {
@@ -61,7 +60,7 @@ export default function profile() {
   };
   const handleSignOut = async () => {
     try {
-      localStorage.removeItem("token");
+      localStorage.clear();
       dispatch(signOut());
       navigate("/");
     } catch (error) {

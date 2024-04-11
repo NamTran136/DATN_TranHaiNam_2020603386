@@ -6,7 +6,7 @@
 @import "bookPublic";
 @import "signinSignup";
 @import "profile";
-
+@import "dashboard";
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -139,6 +139,59 @@ a {
       color: rgb(59, 130, 246);
       &:hover {
         color: rgb(29, 78, 216);
+      }
+    }
+  }
+}
+
+// admin components
+.admin-container {
+  @include grid(1fr 4fr, 2rem);
+  height: 100vh;
+  background-color: rgb(247, 247, 247);
+  > aside {
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    padding: 1rem;
+    z-index: 10;
+    overflow-y: auto;
+    color: #000;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    > .logo {
+      width: 4rem;
+      margin: 0 auto;
+      > img {
+        width: 100%;
+      }
+    }
+    > .wrapper {
+      margin: 2rem 1rem;
+      > h5 {
+        @include heading(2px);
+        opacity: 0.8;
+        margin: 1rem 0;
+      }
+      > ul {
+        @include flex(column, unset, unset, 0.5rem);
+        list-style: none;
+        > li {
+          padding: 0.5rem 1rem;
+          border-radius: 10px;
+          a {
+            color: rgba(0, 0, 0, 0.825);
+            @include flex(row, unset);
+          }
+          button {
+            background-color: rgb(47, 122, 252);
+            color: rgb(255, 255, 255);
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+          }
+        }
       }
     }
   }

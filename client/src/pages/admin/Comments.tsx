@@ -3,7 +3,7 @@ import AdminSidebar from "../../components/admin/AdminSidebar";
 import { FaRegBell } from "react-icons/fa";
 
 
-const dashboard = () => {
+const Comments = () => {
   
   return (
     <div className="admin-container">
@@ -18,10 +18,12 @@ const dashboard = () => {
             alt="User"
           />
         </div>
-        <div className="widget-container"></div>
+        <div className="widget-container">
+          Comments
+        </div>
       </main>
     </div>
   );
 };
 
-export default dashboard;
+export default Comments;

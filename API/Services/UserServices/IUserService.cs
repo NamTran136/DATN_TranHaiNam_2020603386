@@ -7,8 +7,8 @@ namespace API.Services.UserServices
         List<PublicUserDto> GetAll();
         PublicUserDto GetByEmail(string email);
         PublicUserDto GetById(int id);
-        int Update(UserToEditDto dto);
         bool Delete(int id);
+        bool DeleteByEmail(string email);
         bool UsernameExists(string username);
     }
 }

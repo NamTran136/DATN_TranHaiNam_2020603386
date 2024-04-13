@@ -5,7 +5,6 @@ import {
   BookDto,
   CATEGORY,
   CategoryDto,
-  IMAGE_URL,
 } from "../../types";
 import axios from "axios";
 import SubItem from "../../components/public/SubItem";
@@ -73,7 +72,7 @@ const booksByCategory = () => {
               <div className="book-item" key={index}>
                 <Link to={`/book/${book.id}`}>
                   <img
-                    src={`${IMAGE_URL}${book.code}/image.png`}
+                    src={book.imageUrl}
                     alt={book.title}
                   />
                   <div>{book.title}</div>

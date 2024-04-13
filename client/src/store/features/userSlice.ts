@@ -5,6 +5,7 @@ import { GetUser } from "../../types/tools";
 interface UserState {
   user: UserDto;
   token: string;
+  searchInput: string;
   loading: boolean;
   error: string;
 }
@@ -16,6 +17,7 @@ const initialState: UserState = {
     role: "",
     image: "",
   },
+  searchInput: "",
   token: "",
   loading: false,
   error: "",

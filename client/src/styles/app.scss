@@ -86,6 +86,62 @@ a {
 .header {
   padding: 0.5rem 5rem;
 }
+.search-bar-container {
+  display: flex;
+  width: 100%;
+  margin: auto;
+  flex-direction: column;
+  align-items: center;
+  min-width: 40rem;
+  background-color: rgb(211, 211, 211);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  position: relative;
+  > .input-wrapper {
+    background-color: rgb(255, 255, 255);
+    width: 40%;
+    border-radius: 10px;
+    height: 2.5rem;
+    padding: 0 1rem;
+    box-shadow: 0 0 8px rgb(250, 250, 250);
+    display: flex;
+    align-items: center;
+    > input {
+      background-color: transparent;
+      border: none;
+      height: 100%;
+      font-size: 1.25rem;
+      width: 100%;
+      margin-left: 0.3rem;
+      &:focus {
+        outline: none;
+      }
+    }
+    > #search-icon {
+      color: rgb(65, 105, 225);
+      cursor: pointer;
+    }
+  }
+  > .results-list {
+    position: absolute;
+    top: 90%;
+    width: 40%;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 1px 1px 8px rgb(204, 204, 204);
+    border-radius: 10px;
+    max-height: 10rem;
+    overflow-y: scroll;
+    padding: 0.5rem;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    >div {
+      cursor: pointer;
+    }
+  }
+}
 
 .public-container {
   max-width: 64rem;

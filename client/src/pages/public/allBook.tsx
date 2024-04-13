@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { API_URL, BOOK, BookDto, IMAGE_URL } from "../../types";
+import { API_URL, BOOK, BookDto } from "../../types";
 import axios from "axios";
 import SubItem from "../../components/public/SubItem";
 import Menu from "../../components/public/Menu";
@@ -44,7 +44,7 @@ const allBook = () => {
               <div className="book-item" key={index}>
                 <Link to={`/book/${book.id}`}>
                   <img
-                    src={`${IMAGE_URL}${book.code}/image.png`}
+                    src={book.imageUrl}
                     alt={book.title}
                   />
                   <div className="">{book.title}</div>

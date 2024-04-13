@@ -12,6 +12,7 @@ const Home = lazy(() => import("./pages/public/home"));
 const Profile = lazy(() => import("./pages/public/profile"));
 const AllBook = lazy(() => import("./pages/public/allBook"));
 const BooksByCategory = lazy(() => import("./pages/public/booksByCategory"));
+const SearchPage = lazy(() => import("./pages/public/searchPage"));
 const Book = lazy(() => import("./pages/public/book"));
 const ReadingBook = lazy(() => import("./pages/public/readingBook"));
 
@@ -59,6 +60,10 @@ const App = () => {
             <Route
               path="/books/category/:categoryId"
               element={<BooksByCategory />}
+            />
+            <Route
+              path="/books/search/:searchValue"
+              element={<SearchPage />}
             />
             <Route path="book/:bookId" element={<Book />} />
             <Route path="reading-book/:bookId" element={<ReadingBook />} />

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { API_URL, BOOK, BookDto, IMAGE_URL } from "../../types";
+import { API_URL, BOOK, BookDto } from "../../types";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import Title from "../../components/public/Title";
@@ -57,7 +57,7 @@ const book = () => {
             <div className="book-image-wrapper">
               <div className="book-image">
                 <img
-                  src={`${IMAGE_URL}${book?.code}/image.png`}
+                  src={book?.imageUrl}
                   alt={book?.title}
                   className="mx-auto w-max-width h-auto"
                 />

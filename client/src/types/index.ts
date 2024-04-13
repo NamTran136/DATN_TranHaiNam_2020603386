@@ -21,7 +21,7 @@ export type BookDto = {
   description: string;
   author: string;
   language: string;
-  image: string;
+  imageUrl: string;
   isPrivate: boolean;
   categoryId: number
   category: string;

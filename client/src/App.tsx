@@ -16,8 +16,14 @@ const Book = lazy(() => import("./pages/public/book"));
 const ReadingBook = lazy(() => import("./pages/public/readingBook"));
 
 // Admin
-const TransitionPage = lazy(() => import("./pages/admin/index"));
 const Dashboard = lazy(() => import("./pages/admin/dashboard"));
+const UserService = lazy(() => import("./pages/admin/UserService"));
+const BookService = lazy(() => import("./pages/admin/BookService"));
+const CategoryService = lazy(() => import("./pages/admin/CategoryService"));
+const Comments = lazy(() => import("./pages/admin/Comments"));
+const Advertisement = lazy(() => import("./pages/admin/Advertisement"));
+const Confirmation = lazy(() => import("./pages/admin/Confirmation"));
+const Settings = lazy(() => import("./pages/admin/Settings"));
 
 const SignIn = lazy(() => import("./pages/public/signin"));
 const SignUp = lazy(() => import("./pages/public/signup"));
@@ -39,7 +45,7 @@ const App = () => {
       }
       localStorage.setItem("setupTime", now.toString());
     }
-    localStorage.getItem("token")
+    localStorage.getItem("token") !== undefined
       ? dispatch(signInSuccess(localStorage.getItem("token")))
       : dispatch(signOut());
   }
@@ -62,9 +68,15 @@ const App = () => {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
           </Route>
-          <Route path="/admin/" element={<PrivateRoute />}>
-            <Route path="" element={<TransitionPage />} />
-            <Route path="dashboard" element={<Dashboard />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/admin" element={<Dashboard />} />
+            <Route path="/admin/books" element={<BookService />} />
+            <Route path="/admin/categories" element={<CategoryService />} />
+            <Route path="/admin/users" element={<UserService />} />
+            <Route path="/admin/comments" element={<Comments />} />
+            <Route path="/admin/advertisement" element={<Advertisement />} />
+            <Route path="/admin/confirmation" element={<Confirmation />} />
+            <Route path="/admin/settings" element={<Settings />} />
           </Route>
         </Routes>
       </Suspense>

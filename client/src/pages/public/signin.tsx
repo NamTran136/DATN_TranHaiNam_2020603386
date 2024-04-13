@@ -37,7 +37,7 @@ const { loading, error } = useAppSelector((state) => state.user);
       }
       localStorage.setItem("token", data);
       dispatch(signInSuccess(data));
-      navigate("/");
+      navigate("/admin");
     } catch (err: any) {
       dispatch(signInFailure(err.message));
     }

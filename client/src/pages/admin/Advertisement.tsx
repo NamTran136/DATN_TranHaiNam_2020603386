@@ -3,8 +3,7 @@ import AdminSidebar from "../../components/admin/AdminSidebar";
 import { FaRegBell } from "react-icons/fa";
 
 
-const dashboard = () => {
-  
+const Advertisement = () => {
   return (
     <div className="admin-container">
       <AdminSidebar />
@@ -18,10 +17,10 @@ const dashboard = () => {
             alt="User"
           />
         </div>
-        <div className="widget-container"></div>
+        <div className="widget-container">Dịch vụ đang trong quá trình phát triển</div>
       </main>
     </div>
   );
 };
 
-export default dashboard;
+export default Advertisement;

@@ -12,6 +12,7 @@ namespace API.Entities
         public string Description { get; set; }
         public string Author { get; set; }
         public string Language { get; set; }
+        public string ImageUrl {  get; set; }
         public bool IsPrivate {  get; set; } = false;
         [ForeignKey("Category")]
         public int CategoryId { get; set; }

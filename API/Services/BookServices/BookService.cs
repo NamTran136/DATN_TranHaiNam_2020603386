@@ -23,6 +23,7 @@ namespace API.Services.BookServices
                 Author = book.Author,
                 Language = book.Language,
                 IsPrivate = book.IsPrivate,
+                ImageUrl = book.ImageUrl,
                 CategoryId = fetchedCategory.Id,
                 // Category = fetchedCategory
             };
@@ -63,6 +64,7 @@ namespace API.Services.BookServices
                     Author = book.Author,
                     Language = book.Language,
                     CategoryId = book.CategoryId,
+                    ImageUrl = book.ImageUrl,
                     IsPrivate = book.IsPrivate,
                     Category = _db.Categories.Find(book.CategoryId).Name
                 };
@@ -87,6 +89,7 @@ namespace API.Services.BookServices
                     Author = book.Author,
                     Language = book.Language,
                     CategoryId = book.CategoryId,
+                    ImageUrl = book.ImageUrl,
                     IsPrivate = book.IsPrivate,
                     Category = _db.Categories.Find(book.CategoryId).Name
                 };
@@ -108,6 +111,7 @@ namespace API.Services.BookServices
                     Author = x.Author,
                     Language = x.Language,
                     CategoryId = x.CategoryId,
+                    ImageUrl = x.ImageUrl,
                     IsPrivate = x.IsPrivate,
                     Category = x.Category.Name
                 })
@@ -126,6 +130,7 @@ namespace API.Services.BookServices
             fetchedBook.Author = book.Author;
             fetchedBook.Language = book.Language;
             fetchedBook.IsPrivate = book.IsPrivate;
+            fetchedBook.ImageUrl = book.ImageUrl;
             fetchedBook.CategoryId = fetchedCategory.Id;
             fetchedBook.Category = fetchedCategory;
             _db.SaveChanges();

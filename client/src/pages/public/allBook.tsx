@@ -43,10 +43,7 @@ const allBook = () => {
             data.map((book, index) => (
               <div className="book-item" key={index}>
                 <Link to={`/book/${book.id}`}>
-                  <img
-                    src={book.imageUrl}
-                    alt={book.title}
-                  />
+                  <img src={book.imageUrl} alt={book.title} />
                   <div className="">{book.title}</div>
                 </Link>
               </div>

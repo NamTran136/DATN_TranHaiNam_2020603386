@@ -41,6 +41,7 @@
     list-style: none;
     position: absolute;
     left: -9999px; /* Hide off-screen when not needed (this is more accessible than display:none;) */
+    z-index: 10;
   }
 
   .nav__sub-menu li {

@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate
+} from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";
 
 import Loader from "./components/loader";
@@ -61,10 +66,8 @@ const App = () => {
               path="/books/category/:categoryId"
               element={<BooksByCategory />}
             />
-            <Route
-              path="/books/search/:searchValue"
-              element={<SearchPage />}
-            />
+            <Route path="/books/search/:searchValue" element={<SearchPage />} />
+            <Route path="/books/search/" element={<AllBook />} />
             <Route path="book/:bookId" element={<Book />} />
             <Route path="reading-book/:bookId" element={<ReadingBook />} />
             <Route element={<ProtectedRoute />}>
@@ -74,7 +77,8 @@ const App = () => {
             <Route path="/signup" element={<SignUp />} />
           </Route>
           <Route element={<PrivateRoute />}>
-            <Route path="/admin" element={<Dashboard />} />
+            <Route path="/admin" element={<Navigate to="/admin/dashboard" />} />
+            <Route path="/admin/dashboard" element={<Dashboard />} />
             <Route path="/admin/books" element={<BookService />} />
             <Route path="/admin/categories" element={<CategoryService />} />
             <Route path="/admin/users" element={<UserService />} />

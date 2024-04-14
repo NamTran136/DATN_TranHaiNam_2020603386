@@ -30,7 +30,7 @@ const AdminSidebar = () => {
         <h5>Dashboard</h5>
         <ul>
           <Li
-            url="/admin"
+            url="/admin/dashboard"
             text="Dashboard"
             Icon={RiDashboardFill}
             location={location}

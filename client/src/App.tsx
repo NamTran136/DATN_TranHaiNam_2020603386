@@ -30,6 +30,12 @@ const Comments = lazy(() => import("./pages/admin/Comments"));
 const Advertisement = lazy(() => import("./pages/admin/Advertisement"));
 const Confirmation = lazy(() => import("./pages/admin/Confirmation"));
 const Settings = lazy(() => import("./pages/admin/Settings"));
+const CategoryNew = lazy(() => import("./pages/admin/management/categoryServices/create"));
+const CategoryRead = lazy(() => import("./pages/admin/management/categoryServices/read"));
+const CategoryUpdate = lazy(
+  () => import("./pages/admin/management/categoryServices/update")
+);
+const CategoryDelete = lazy(() => import("./pages/admin/management/categoryServices/delete"));
 
 const SignIn = lazy(() => import("./pages/public/signin"));
 const SignUp = lazy(() => import("./pages/public/signup"));
@@ -86,6 +92,12 @@ const App = () => {
             <Route path="/admin/advertisement" element={<Advertisement />} />
             <Route path="/admin/confirmation" element={<Confirmation />} />
             <Route path="/admin/settings" element={<Settings />} />
+            {/* Management */}
+            {/* Category */}
+            <Route path="/admin/category/new" element={<CategoryNew />} />
+            <Route path="/admin/category/read/:id" element={<CategoryRead />} />
+            <Route path="/admin/category/edit/:id" element={<CategoryUpdate />} />
+            <Route path="/admin/category/delete/:id" element={<CategoryDelete />} />
           </Route>
         </Routes>
       </Suspense>

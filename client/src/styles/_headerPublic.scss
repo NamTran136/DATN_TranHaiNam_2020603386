@@ -36,6 +36,7 @@
 
   .nav__sub-menu {
     min-width: 12rem;
+    width: 13rem;
     padding-top: 0.5rem;
     border: 0.1rem solid rgb(209, 213, 219);
     list-style: none;
@@ -51,8 +52,9 @@
 
   .nav__sub-menu .nav__sub-menu-item {
     display: inline-block;
-    width: 100%;
     color: rgb(0, 0, 0);
+    font-size: 0.9rem;
+    width: 100%;
   }
   .nav li:hover .nav-link {
     color: rgb(30, 64, 175);

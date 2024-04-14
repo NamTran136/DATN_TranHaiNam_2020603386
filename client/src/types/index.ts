@@ -13,6 +13,9 @@ export type CategoryDto = {
   id: number;
   name: string;
 };
+export type CategoryToEditDto = {
+  name: string;
+};
 
 export type BookDto = {
   id: number;

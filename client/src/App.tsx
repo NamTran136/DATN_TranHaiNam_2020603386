@@ -10,7 +10,7 @@ import Loader from "./components/loader";
 import PublicRoute from "./components/publicRoute";
 import PrivateRoute from "./components/privateRoute";
 import ProtectedRoute from "./components/protectedRoute";
-import { useAppDispatch } from "./store/store";
+import { useAppDispatch, useAppSelector } from "./store/store";
 import { signInSuccess, signOut } from "./store/features/userSlice";
 // Public
 const Home = lazy(() => import("./pages/public/home"));
@@ -36,11 +36,24 @@ const CategoryUpdate = lazy(
   () => import("./pages/admin/management/categoryServices/update")
 );
 const CategoryDelete = lazy(() => import("./pages/admin/management/categoryServices/delete"));
+const BookNew = lazy(
+  () => import("./pages/admin/management/bookServices/create")
+);
+const BookRead = lazy(
+  () => import("./pages/admin/management/bookServices/read")
+);
+const BookUpdate = lazy(
+  () => import("./pages/admin/management/bookServices/update")
+);
+const BookDelete = lazy(
+  () => import("./pages/admin/management/bookServices/delete")
+);
 
 const SignIn = lazy(() => import("./pages/public/signin"));
 const SignUp = lazy(() => import("./pages/public/signup"));
 const App = () => {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.user);
   useEffect(() => {
     checkToken();
   }, []);
@@ -60,6 +73,10 @@ const App = () => {
     localStorage.getItem("token") !== undefined
       ? dispatch(signInSuccess(localStorage.getItem("token")))
       : dispatch(signOut());
+    if(user.role !== "" && user.role==="Admin") {
+      dispatch(signOut());
+      localStorage.clear();
+    }
   }
   return (
     <Router>
@@ -96,8 +113,25 @@ const App = () => {
             {/* Category */}
             <Route path="/admin/category/new" element={<CategoryNew />} />
             <Route path="/admin/category/read/:id" element={<CategoryRead />} />
-            <Route path="/admin/category/edit/:id" element={<CategoryUpdate />} />
-            <Route path="/admin/category/delete/:id" element={<CategoryDelete />} />
+            <Route
+              path="/admin/category/edit/:id"
+              element={<CategoryUpdate />}
+            />
+            <Route
+              path="/admin/category/delete/:id"
+              element={<CategoryDelete />}
+            />
+            {/* Book */}
+            <Route path="/admin/book/new" element={<BookNew />} />
+            <Route path="/admin/book/read/:id" element={<BookRead />} />
+            <Route
+              path="/admin/book/edit/:id"
+              element={<BookUpdate />}
+            />
+            <Route
+              path="/admin/book/delete/:id"
+              element={<BookDelete />}
+            />
           </Route>
         </Routes>
       </Suspense>

@@ -1,7 +1,7 @@
 import { MouseEventHandler, useCallback, useEffect, useState } from "react";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import axios from "axios";
-import { API_URL, CATEGORY, CategoryDto, SortOrder } from "../../types";
+import { API_URL, CATEGORY, CategoryDto, ColumnProps, SortOrder } from "../../types";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { FaCircleArrowUp } from "react-icons/fa6";
@@ -11,10 +11,7 @@ type SortFunctionProps = {
   sortKey: keyof CategoryDto;
   reverse: boolean;
 };
-interface ColumnProps<T extends Object> {
-  Header: string;
-  value: keyof T;
-}
+
 
 function SortButton({
   sortOrder,
@@ -71,10 +68,9 @@ const CategoryService = () => {
       })
       .then((objectData: CategoryDto[]) => {
         setData(objectData);
-        //console.log(objectData);
       })
       .catch((err) => {
-        setError("Không có thể loại nào");
+        setError("List of Categories unavailable");
         console.log(err);
       })
       .finally(() => {
@@ -115,12 +111,14 @@ const CategoryService = () => {
                   <tr>
                     {columns.map((column) => (
                       <th key={column.value}>
-                        {column.Header}
-                        <SortButton
-                          columnKey={column.value}
-                          onClick={() => changeSort(column.value)}
-                          {...{ sortOrder, sortKey }}
-                        />
+                        <div className="th-wrapper">
+                          {column.Header}
+                          <SortButton
+                            columnKey={column.value}
+                            onClick={() => changeSort(column.value)}
+                            {...{ sortOrder, sortKey }}
+                          />
+                        </div>
                       </th>
                     ))}
                     <th>Action</th>
@@ -131,7 +129,7 @@ const CategoryService = () => {
                     <tr key={i}>
                       <td>{d.id}</td>
                       <td>{d.name}</td>
-                      <td>
+                      <td className="btn-wrapper">
                         <Link
                           className="bg-blue"
                           to={`/admin/category/read/${d.id}`}

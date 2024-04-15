@@ -9,10 +9,19 @@ export const BOOK = "Book";
 export const AUTH = "Auth";
 export const USER = "User";
 
+export interface ColumnProps<T extends Object> {
+  Header: string;
+  value: keyof T;
+}
+
 export type CategoryDto = {
   id: number;
   name: string;
 };
+export type CategoryToEditDto = {
+  name: string;
+};
+
 
 export type BookDto = {
   id: number;
@@ -21,9 +30,30 @@ export type BookDto = {
   description: string;
   author: string;
   language: string;
-  image: string;
+  imageUrl: string;
   isPrivate: boolean;
   categoryId: number
+  category: string;
+};
+export type BookToAddDto = {
+  code: string;
+  title: string;
+  description: string;
+  author: string;
+  language: string;
+  imageUrl: string;
+  isPrivate: boolean;
+  category: string;
+};
+export type BookToEditDto = {
+  id: number;
+  code: string;
+  title: string;
+  description: string;
+  author: string;
+  language: string;
+  imageUrl: string;
+  isPrivate: boolean;
   category: string;
 };
 

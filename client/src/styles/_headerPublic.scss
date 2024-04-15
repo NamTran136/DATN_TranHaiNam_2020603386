@@ -24,6 +24,7 @@
     float: left;
     margin: 0 2rem;
   }
+  
   .nav .nav-item .nav-item-text {
     @include flex(row, center, center, 0);
   }
@@ -35,11 +36,13 @@
 
   .nav__sub-menu {
     min-width: 12rem;
+    width: 13rem;
     padding-top: 0.5rem;
     border: 0.1rem solid rgb(209, 213, 219);
     list-style: none;
     position: absolute;
     left: -9999px; /* Hide off-screen when not needed (this is more accessible than display:none;) */
+    z-index: 10;
   }
 
   .nav__sub-menu li {
@@ -49,8 +52,9 @@
 
   .nav__sub-menu .nav__sub-menu-item {
     display: inline-block;
-    width: 100%;
     color: rgb(0, 0, 0);
+    font-size: 0.9rem;
+    width: 100%;
   }
   .nav li:hover .nav-link {
     color: rgb(30, 64, 175);

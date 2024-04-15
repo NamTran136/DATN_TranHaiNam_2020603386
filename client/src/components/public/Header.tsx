@@ -4,7 +4,7 @@ import { API_URL, CATEGORY, CategoryDto } from "../../types";
 import axios from "axios";
 import { IoIosArrowDown } from "react-icons/io";
 import { useAppSelector } from "../../store/store";
-const header = () => {
+const Header = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<CategoryDto[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -86,4 +86,4 @@ const header = () => {
   );
 };
 
-export default header;
+export default Header;

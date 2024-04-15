@@ -36,6 +36,8 @@ const { loading, error } = useAppSelector((state) => state.user);
         return;
       }
       localStorage.setItem("token", data);
+      var now = new Date().getTime();
+      localStorage.setItem("setupTime", now.toString());
       dispatch(signInSuccess(data));
       navigate("/admin");
     } catch (err: any) {

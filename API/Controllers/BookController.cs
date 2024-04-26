@@ -30,6 +30,8 @@ namespace API.Controllers
             return books;
         }
 
+        
+
         [HttpGet("{id}")]
         public ActionResult<BookDto> GetOne(int id)
         {
@@ -68,6 +70,17 @@ namespace API.Controllers
                 return NoContent();
             }
             return BadRequest("Something seems to have gone wrong.");
+        }
+
+        [HttpPost("pagination")]
+        public ActionResult<List<BookDto>> GetByPage(PaginationDto param)
+        {
+            var books = _bookService.GetByPage(param);
+            if (books == null)
+            {
+                return NotFound();
+            }
+            return books;
         }
 
         [HttpPost("UploadImage")]

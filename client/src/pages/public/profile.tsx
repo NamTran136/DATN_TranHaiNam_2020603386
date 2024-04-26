@@ -129,7 +129,7 @@ export default function profile() {
   };
   return (
     <div className="profile">
-      <h1>Profile</h1>
+      <h1>Thiết lập tài khoản</h1>
       <form onSubmit={handleSubmit} className="form">
         <input
           type="file"

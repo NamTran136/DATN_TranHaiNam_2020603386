@@ -38,11 +38,12 @@
     @include grid(auto auto auto, 1rem, unset);
     padding: 10px;
     > .content-item {
-      @include flex(row, center, center, 0);
+      @include flex(row, flex-start, center, 0);
       font-size: 1rem;
       line-height: 1.25rem;
       color: rgb(59, 130, 246);
       font-weight: 600;
+      margin-left: 48px;
       &:hover {
         color: rgb(29, 78, 216);
       }

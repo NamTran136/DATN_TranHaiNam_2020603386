@@ -71,6 +71,11 @@ const Header = () => {
               {error && <li className="red">{error}</li>}
             </ul>
           </li>
+          <li className="nav-item">
+            <Link to="/review" className="nav-link">
+              Góc review
+            </Link>
+          </li>
         </ul>
         <div className="auth-container">
           <Link to="/profile">

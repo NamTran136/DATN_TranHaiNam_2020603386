@@ -14,5 +14,6 @@ namespace API.Entities
         public bool IsAdmin { get; set; } = false;
         public string ImageUrl { get; set; } = "https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png";
         public int Point { get; set; } = 20;
+        public ICollection<Comment> Comments { get; set; }
     }
 }

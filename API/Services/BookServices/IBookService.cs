@@ -13,5 +13,6 @@ namespace API.Services.BookServices
         bool Delete(int id);
         Category GetCategoryByName(string name);
         List<BookDto> GetBookByCategory(int id);
+        List<BookDto> GetByPage(PaginationDto param);
     }
 }

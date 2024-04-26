@@ -1,5 +1,6 @@
 ﻿using API.DTOs;
 using API.Services.UserServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +15,7 @@ namespace API.Controllers
         {
             _userService = userService;
         }
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public IActionResult GetAll()
         {
             var users = _userService.GetAll();
@@ -24,7 +25,7 @@ namespace API.Controllers
             }
             return Ok(users);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public IActionResult GetUserById(int id)
         {
             var user = _userService.GetById(id);
@@ -34,7 +35,7 @@ namespace API.Controllers
             }
             return Ok(user);
         }
-        [HttpGet("email")]
+        [HttpGet("email"), Authorize]
         public IActionResult GetUserByEmail(string email)
         {
             var user = _userService.GetByEmail(email);
@@ -45,12 +46,12 @@ namespace API.Controllers
             return Ok(user);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             return Ok(_userService.Delete(id));
         }
-        [HttpDelete("email={email}")]
+        [HttpDelete("email={email}"), Authorize]
         public IActionResult DeleteByEmail(string email)
         {
             return Ok(_userService.DeleteByEmail(email));

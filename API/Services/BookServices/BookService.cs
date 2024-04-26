@@ -25,7 +25,7 @@ namespace API.Services.BookServices
                 IsPrivate = book.IsPrivate,
                 ImageUrl = book.ImageUrl,
                 CategoryId = fetchedCategory.Id,
-                // Category = fetchedCategory
+                Category = fetchedCategory
             };
             _db.Books.Add(bookToAdd);
             _db.SaveChanges();
@@ -51,6 +51,34 @@ namespace API.Services.BookServices
         public List<BookDto> GetAll()
         {
             var books = _db.Books.ToList();
+            if (books.Count == 0) return null;
+            var toReturn = new List<BookDto>();
+            foreach (var book in books)
+            {
+                var item = new BookDto
+                {
+                    Id = book.Id,
+                    Title = book.Title,
+                    Code = book.Code,
+                    Description = book.Description,
+                    Author = book.Author,
+                    Language = book.Language,
+                    CategoryId = book.CategoryId,
+                    ImageUrl = book.ImageUrl,
+                    IsPrivate = book.IsPrivate,
+                    Category = _db.Categories.Find(book.CategoryId).Name
+                };
+                toReturn.Add(item);
+            }
+            return toReturn;
+        }
+
+        public List<BookDto> GetByPage(PaginationDto param)
+        {
+            int listSize = _db.Books.Count();
+            int startIndex = (param.Page - 1) * param.PageSize;
+            if (startIndex >= listSize) return null;
+            var books = _db.Books.Skip(startIndex).Take(param.PageSize).ToList();
             if (books.Count == 0) return null;
             var toReturn = new List<BookDto>();
             foreach (var book in books)

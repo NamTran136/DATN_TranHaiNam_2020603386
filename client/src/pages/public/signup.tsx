@@ -3,12 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../../components/public/OAuth";
 import axios from "axios";
 import { API_URL, AUTH, RegisterDto } from "../../types";
+import toast from "react-hot-toast";
 
-interface FormValues {
-  username: string;
-  email: string;
-  password: string;
-}
 
 function Signup() {
   const initialFormValues: RegisterDto = {
@@ -17,7 +13,7 @@ function Signup() {
     password: "",
   };
   const [formData, setFormData] = useState(initialFormValues);
-  const [error, setError] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -25,10 +21,13 @@ function Signup() {
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if(formData.password !== confirmPassword) {
+      toast.error("Mật khẩu nhập lại không chính xác!");
+      return;
+    }
     try {
       setLoading(false);
-      setError(false);
-      const { data, status } = await axios.post(
+      const { status } = await axios.post(
         `${API_URL}${AUTH}/register`,
         formData,
         {
@@ -39,13 +38,14 @@ function Signup() {
         }
       );
       if (status !== 200) {
-        setError(true);
+        toast.error("Đăng ký tài khoản thất bại!");
         return;
       }
+      toast.success("Đăng ký thành công!");
       navigate("/signin");
     } catch (err) {
       setLoading(false);
-      setError(true);
+      toast.error("Username hoặc email đã tồn tại!");
     }
   };
   return (
@@ -78,7 +78,7 @@ function Signup() {
           type="password"
           placeholder="Nhập lại mật khẩu"
           id="repeatPassword"
-          onChange={handleChange}
+          onChange={(e) => setConfirmPassword(e.target.value)}
         />
         <button disabled={loading}>{loading ? "Loading..." : "Đăng ký"}</button>
         <OAuth />
@@ -94,9 +94,6 @@ function Signup() {
           <span className="blue">Quay lại trang chủ</span>
         </Link>
       </div>
-      <p className="error-message">
-        {error && "Username hoặc email đã tồn tại"}
-      </p>
     </div>
   );
 }

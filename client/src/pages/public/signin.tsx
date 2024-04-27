@@ -5,6 +5,7 @@ import axios from "axios";
 import { AUTH, API_URL, LoginDto } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { signInFailure, signInStart, signInSuccess } from "../../store/features/userSlice";
+import toast from "react-hot-toast";
 
 
 function signin() {
@@ -12,7 +13,7 @@ function signin() {
   const [formData, setFormData] = useState<LoginDto>(initialFormValues);
 const dispatch = useAppDispatch();
 
-const { loading, error } = useAppSelector((state) => state.user);
+const { loading } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -33,15 +34,19 @@ const { loading, error } = useAppSelector((state) => state.user);
       );
       if (status !== 200) {
         dispatch(signInFailure());
+        toast.error("Có lỗi xảy ra trong quá trình đăng nhập");
         return;
       }
       localStorage.setItem("token", data);
       var now = new Date().getTime();
       localStorage.setItem("setupTime", now.toString());
       dispatch(signInSuccess(data));
+      toast.success("Đăng nhập thành công!");
       navigate("/admin");
     } catch (err: any) {
       dispatch(signInFailure(err.message));
+      console.log(err.message);
+      toast.error("Email hoặc mật khẩu không chính xác");
     }
   };
   return (
@@ -80,9 +85,6 @@ const { loading, error } = useAppSelector((state) => state.user);
           <span className="blue">Quay lại trang chủ</span>
         </Link>
       </div>
-      <p className="error-message">
-        {error ? error || "Something went wrong!" : ""}
-      </p>
     </div>
   );
 }

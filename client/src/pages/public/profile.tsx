@@ -11,6 +11,7 @@ import { API_URL, AUTH, USER, UserEditDto } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOut, updateUserFailure, updateUserStart, updateUserSuccess } from "../../store/features/userSlice";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function profile() {
   const dispatch = useAppDispatch();
@@ -26,7 +27,6 @@ export default function profile() {
   const [formData, setFormData] = useState<UserEditDto>(initialFormValues);
   const [image, setImage] = useState<any | undefined>(undefined);
   const [imageError, setImageError] = useState(false);
-  const [updateSuccess, setUpdateSuccess] = useState(false);
   const [imagePercent, setImagePercent] = useState(0);
   useEffect(() => {
     if (image) {
@@ -79,15 +79,23 @@ export default function profile() {
         },
       });
       if (status !== 200) {
-            dispatch(deleteUserFailure("Có lỗi xảy ra trong quá trình!"));
-      }else{
+          dispatch(deleteUserFailure("Có lỗi xảy ra trong quá trình!"));
+          toast.error("Xóa tài khoản thất bại!");
+      }
+      else {
         if(data === true) {
           dispatch(deleteUserSuccess());
+          toast.success("Tài khoản đã được xóa!");
           localStorage.clear();
+          navigate("/");
+        }
+        else {
+          toast.error("Xóa tài khoản thất bại!");
         }
       }
     } catch (err: any) {
       dispatch(deleteUserFailure("Có lỗi xảy ra trong quá trình!"));
+      toast.error("Xóa tài khoản thất bại!");
       console.log("Có lỗi xảy ra: " + err.message);
     }
   };
@@ -105,26 +113,31 @@ export default function profile() {
       if(status !== 200) {
         if(status === 404) {
           dispatch(updateUserFailure("Người dùng không tồn tại!"));
+          toast.error("Người dùng không tồn tại!");
         }
         else {
           if(status === 400) {
             dispatch(updateUserFailure("Tên người dùng đã tồn tại. Vui lòng dùng tên khác."));
+            toast.error("Tên người dùng đã tồn tại. Vui lòng dùng tên khác.");
           }
           else {
             dispatch(updateUserFailure("Có lỗi xảy ra trong quá trình!"));
+            toast.error("Có lỗi xảy ra trong quá trình!");
           }
         }
       }
       else{
         dispatch(updateUserSuccess(data));
+        toast.success("Tài khoản đã cập nhật thành công!");
         localStorage.setItem("token", data);
         var now = new Date().getTime();
         localStorage.setItem("setupTime", now.toString());
-        setUpdateSuccess(true);
+        
       }
-    } catch (error: any) {
+    } catch (err: any) {
        dispatch(updateUserFailure("Có lỗi xảy ra trong quá trình!"));
-       console.log(error.message);
+       toast.error("Có lỗi xảy ra trong quá trình!");
+       console.log(err.message);
     }
   };
   return (
@@ -204,12 +217,6 @@ export default function profile() {
           Sign out
         </span>
       </div>
-      <p className="red mt-5">
-        {error && "Có lỗi xảy ra khi cập nhật!"}
-      </p>
-      <p className="green mt-5">
-        {updateSuccess && `Tài khoản đã được cập nhật thành công!`}
-      </p>
     </div>
   );
 }

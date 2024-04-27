@@ -10,6 +10,7 @@ import Loader from "./components/loader";
 import PublicRoute from "./components/publicRoute";
 import PrivateRoute from "./components/privateRoute";
 import ProtectedRoute from "./components/protectedRoute";
+import { Toaster } from "react-hot-toast";
 // Public
 const Home = lazy(() => import("./pages/public/home"));
 const Profile = lazy(() => import("./pages/public/profile"));
@@ -105,6 +106,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
+      <Toaster />
     </Router>
   );
 };

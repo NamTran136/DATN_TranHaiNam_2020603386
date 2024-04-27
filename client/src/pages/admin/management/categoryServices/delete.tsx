@@ -3,6 +3,7 @@ import { API_URL, CATEGORY, CategoryDto } from "../../../../types";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useAppSelector } from "../../../../store/store";
+import toast from "react-hot-toast";
 
 const deleteCategory = () => {
   const navigate = useNavigate();
@@ -15,8 +16,6 @@ const deleteCategory = () => {
   }, []);
   const { id } = useParams();
   const { token } = useAppSelector((state) => state.user);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const fetchData = () => {
     axios
       .get(API_URL + CATEGORY + "/" + id)
@@ -33,8 +32,6 @@ const deleteCategory = () => {
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
     axios
       .delete(`${API_URL}${CATEGORY}?id=${id}`, {
         headers: {
@@ -45,17 +42,14 @@ const deleteCategory = () => {
       })
       .then((res) => {
         if (res.status === 204) {
-          setMessage("Delete this category successfully.");
-          setError("");
-          setTimeout(() => {
-            navigate(`/admin/categories`)
-          }, 3000);
+          toast.success("Delete this category successfully.");
+
+          navigate(`/admin/categories`)
         }
       })
       .catch((err) => {
         console.log(err.message);
-        setError("Delete this category unsuccessfully.");
-        setMessage("");
+        toast.error("Delete this category unsuccessfully.");
       });
   };
   return (
@@ -92,10 +86,6 @@ const deleteCategory = () => {
             </Link>
           </div>
         </form>
-        <div className="mt-2">
-          {message && <span className="green">{message}</span>}
-          {error && <span className="red">{error}</span>}
-        </div>
       </div>
     </div>
   );

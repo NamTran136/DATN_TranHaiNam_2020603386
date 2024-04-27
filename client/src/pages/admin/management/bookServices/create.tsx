@@ -10,6 +10,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../../../firebase";
+import toast from "react-hot-toast";
 const create = () => {
     const navigate = useNavigate();
     const { token } = useAppSelector((state) => state.user);
@@ -23,8 +24,6 @@ const create = () => {
       isPrivate: false,
       category: "Cổ tích - Thần thoại",
     });
-    const [message, setMessage] = useState("");
-    const [error, setError] = useState("");
     const [data, setData] = useState<CategoryDto[]>([]);
     
     useEffect(() => {
@@ -42,6 +41,7 @@ const create = () => {
         })
         .catch((err) => {
           console.log(err);
+          toast.error("Có lỗi xảy ra khi tải");
         });
     };
     const handleBack = () => {
@@ -49,7 +49,6 @@ const create = () => {
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log(value)
       axios.post(`${API_URL}${BOOK}`, value, {
         headers: {
           "Content-Type": "application/json",
@@ -58,8 +57,7 @@ const create = () => {
         }
       }).then(res => {
         if(res.status === 204) {
-            setMessage("Add a category successfully.");
-            setError("");
+            toast.success("Add a category successfully.");
             setValue({
               ...value,
               code: "",
@@ -75,8 +73,7 @@ const create = () => {
       })
       .catch(err => {
         console.log(err.message);
-        setError("Add a category unsuccessfully.");
-        setMessage("");
+        toast.error("Add a category unsuccessfully.");
       });
     };
 
@@ -255,10 +252,6 @@ const create = () => {
             </Link>
           </div>
         </form>
-        <div className="mt-2">
-          {message && <span className="green">{message}</span>}
-          {error && <span className="red">{error}</span>}
-        </div>
       </div>
     </div>
   );

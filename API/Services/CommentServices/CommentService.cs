@@ -20,7 +20,7 @@ namespace API.Services.CommentServices
                 {
                     Id = x.Id,
                     Content = x.Content,
-                    TimeUp = x.CreatedAt.ToString(),
+                    TimeUp = x.CreatedAt.ToString("MM/dd/yyyy HH:mm"),
                     Title = x.Book.Title,
                     ImageUrl = x.User.ImageUrl,
                     Username = x.User.Username
@@ -32,11 +32,12 @@ namespace API.Services.CommentServices
         {
             var comments = _db.Comments
                 .Where(x => x.BookId == id)
+                .OrderByDescending(n => n.CreatedAt)
                 .Select(x => new CommentDto
                 {
                     Id = x.Id,
                     Content = x.Content,
-                    TimeUp = x.CreatedAt.ToString(),
+                    TimeUp = x.CreatedAt.ToString("MM/dd/yyyy HH:mm"),
                     Title = x.Book.Title,
                     ImageUrl = x.User.ImageUrl,
                     Username = x.User.Username
@@ -46,12 +47,12 @@ namespace API.Services.CommentServices
         public CommentDto GetOne(int id)
         {
             var comment = _db.Comments
-                .Where(x => x.BookId == id)
+                .Where(x => x.Id == id)
                 .Select(x => new CommentDto
                 {
                     Id = x.Id,
                     Content = x.Content,
-                    TimeUp = x.CreatedAt.ToString(),
+                    TimeUp = x.CreatedAt.ToString("MM/dd/yyyy HH:mm"),
                     Title = x.Book.Title,
                     ImageUrl = x.User.ImageUrl,
                     Username = x.User.Username
@@ -87,21 +88,6 @@ namespace API.Services.CommentServices
             _db.Comments.Remove(fetchedComment);
             _db.SaveChanges();
             return true;
-        }
-
-        public string ConvertDatetime(DateTime dateTime)
-        {
-            TimeSpan time = DateTime.Now - dateTime;
-            var days = time.Days;
-            var hours = time.Hours;
-            if(hours < 24)
-            {
-                return hours + " giờ trưỡc";
-            }
-            else
-            {
-                return days + " ngày trưỡc";
-            }
         }
     }
 }

@@ -9,7 +9,6 @@ namespace API.Services.CommentServices
         int Add(CommentAddOrEditDto comment);
         bool Delete(int id);
         CommentDto GetOne(int id);
-        string ConvertDatetime(DateTime dateTime);
 
     }
 }

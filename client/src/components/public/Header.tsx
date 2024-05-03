@@ -82,7 +82,9 @@ const Header = () => {
             {user.username !== "" ? (
               <img src={user.image} alt={user.username} className="avatar" />
             ) : (
-              <button className="btn-signin">Đăng nhập</button>
+              <button className="btn-signin" onClick={() => {
+                localStorage.setItem("previousUrl", window.location.href);
+              }}>Đăng nhập</button>
             )}
           </Link>
         </div>

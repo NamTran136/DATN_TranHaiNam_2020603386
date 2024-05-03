@@ -42,7 +42,9 @@ const { loading } = useAppSelector((state) => state.user);
       localStorage.setItem("expiredTime", now.toString());
       dispatch(signInSuccess(data));
       toast.success("Đăng nhập thành công!");
-      navigate("/admin");
+      window.location.href =
+        localStorage.getItem("previousUrl") || "http://localhost:3000/admin";
+
     } catch (err: any) {
       dispatch(signInFailure(err.message));
       console.log(err.message);

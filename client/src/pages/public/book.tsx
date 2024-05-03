@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { API_URL, BOOK, BookDto } from "../../types";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Title from "../../components/public/Title";
 import Menu from "../../components/public/Menu";
 import SubItem from "../../components/public/SubItem";
 import Comment from "../../components/public/Comment";
 import { useAppSelector } from "../../store/store";
+import toast from "react-hot-toast";
 
 const book = () => {
+  const navigate = useNavigate();
   const { user } = useAppSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [book, setBook] = useState<BookDto>();
@@ -90,13 +92,20 @@ const book = () => {
                       Vui lòng chọn tải file hoặc đọc online
                     </div>
                     <div className="book-btn-wrapper">
-                      <button type="button" className="bg-red">
-                        <Link
-                          className="text-white"
-                          to={`https://drive.google.com/uc?export=download&id=${book?.code}`}
-                        >
-                          Tải PDF
-                        </Link>
+                      <button
+                        type="button"
+                        className="bg-red text-white"
+                        onClick={() => {
+                          if (user.email) {
+                            window.location.href = `https://drive.google.com/uc?export=download&id=${book?.code}`;
+                          } else {
+                            toast.error(
+                              "Vui lòng đăng nhập trước khi tải sách"
+                            );
+                          }
+                        }}
+                      >
+                        Tải PDF
                       </button>
                       <button type="button" className="bg-blue">
                         <Link

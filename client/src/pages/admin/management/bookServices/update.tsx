@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { API_URL, BOOK, BookDto, BookToEditDto, CATEGORY, CategoryDto } from "../../../../types";
+import {
+  API_URL,
+  BOOK,
+  BookDto,
+  BookToEditDto,
+  CATEGORY,
+  CategoryDto,
+} from "../../../../types";
 import axios from "axios";
 import { useAppSelector } from "../../../../store/store";
 import {
@@ -10,6 +17,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../../../firebase";
+import toast from "react-hot-toast";
 
 const update = () => {
   const navigate = useNavigate();
@@ -43,7 +51,7 @@ const update = () => {
           language: book.language,
           imageUrl: book.imageUrl,
           isPrivate: book.isPrivate,
-          category: book.category
+          category: book.category,
         });
       })
       .catch((err) => {
@@ -52,15 +60,11 @@ const update = () => {
   };
   const { token } = useAppSelector((state) => state.user);
 
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const handleBack = () => {
     navigate("/admin/books");
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
     axios
       .put(`${API_URL}${BOOK}`, value, {
         headers: {
@@ -71,14 +75,12 @@ const update = () => {
       })
       .then((res) => {
         if (res.status === 204) {
-          setMessage("Edit this book successfully.");
-          setError("");
+          toast.success("Edit this book successfully.");
         }
       })
       .catch((err) => {
         console.log(err.message);
-        setError("Edit this book unsuccessfully.");
-        setMessage("");
+        toast.error("Edit this book unsuccessfully.");
       });
   };
   const [categories, setCategories] = useState<CategoryDto[]>([]);
@@ -265,10 +267,6 @@ const update = () => {
             </Link>
           </div>
         </form>
-        <div className="mt-2">
-          {message && <span className="green">{message}</span>}
-          {error && <span className="red">{error}</span>}
-        </div>
       </div>
     </div>
   );

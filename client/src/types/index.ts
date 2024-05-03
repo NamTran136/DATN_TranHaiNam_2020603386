@@ -8,6 +8,7 @@ export const CATEGORY = "Category";
 export const BOOK = "Book";
 export const AUTH = "Auth";
 export const USER = "User";
+export const COMMENT = "Comments"
 
 export interface ColumnProps<T extends Object> {
   Header: string;
@@ -93,3 +94,19 @@ export type UserDto = {
   role: string;
   image: string;
 };
+
+export type UserPrivateDto = {
+  id: number;
+  username: string;
+  email: string;
+  imageUrl: string;
+};
+
+export type CommentDto = {
+  id: number;
+  content: string;
+  timeUp: string;
+  username: string;
+  imageUrl: string;
+  title: string;
+}

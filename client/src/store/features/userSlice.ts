@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { UserDto } from "../../types";
-import { GetUser } from "../../types/tools";
+import { GetUser } from "../../utils/appUtils";
 
 interface UserState {
   user: UserDto;

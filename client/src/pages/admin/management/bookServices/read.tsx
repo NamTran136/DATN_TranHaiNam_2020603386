@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { API_URL, BOOK, BookDto } from "../../../../types"
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const read = () => {
     const navigate = useNavigate();
@@ -30,6 +31,7 @@ const read = () => {
         })
         .catch((err) => {
           console.log(err);
+          toast.error("Có lỗi xảy ra khi tải");
         });
     };
     const handleBack = () => {

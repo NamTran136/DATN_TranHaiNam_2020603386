@@ -71,13 +71,20 @@ const Header = () => {
               {error && <li className="red">{error}</li>}
             </ul>
           </li>
+          <li className="nav-item">
+            <Link to="/review" className="nav-link">
+              Góc review
+            </Link>
+          </li>
         </ul>
         <div className="auth-container">
           <Link to="/profile">
             {user.username !== "" ? (
               <img src={user.image} alt={user.username} className="avatar" />
             ) : (
-              <button className="btn-signin">Đăng nhập</button>
+              <button className="btn-signin" onClick={() => {
+                localStorage.setItem("previousUrl", window.location.href);
+              }}>Đăng nhập</button>
             )}
           </Link>
         </div>

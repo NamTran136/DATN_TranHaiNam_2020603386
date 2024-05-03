@@ -3,6 +3,7 @@ import { API_URL, BOOK, BookDto } from "../../../../types";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useAppSelector } from "../../../../store/store";
+import toast from "react-hot-toast";
 
 const deleteCategory = () => {
   const navigate = useNavigate();
@@ -31,18 +32,15 @@ const deleteCategory = () => {
       })
       .catch((err) => {
         console.log(err);
+        toast.error("Có lỗi xảy ra khi tải");
       });
   };
   const { token } = useAppSelector((state) => state.user);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const handleBack = () => {
     navigate("/admin/books");
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
     axios
       .delete(`${API_URL}${BOOK}/${id}`, {
         headers: {
@@ -53,8 +51,7 @@ const deleteCategory = () => {
       })
       .then((res) => {
         if (res.status === 204) {
-          setMessage("Delete this book successfully.");
-          setError("");
+          toast.success("Delete this book successfully.");
           setTimeout(() => {
             navigate(`/admin/books`)
           }, 3000);
@@ -62,8 +59,7 @@ const deleteCategory = () => {
       })
       .catch((err) => {
         console.log(err.message);
-        setError("Delete this book unsuccessfully.");
-        setMessage("");
+        toast.error("Delete this book unsuccessfully.");
       });
   };
   return (
@@ -106,10 +102,6 @@ const deleteCategory = () => {
             </Link>
           </div>
         </form>
-        <div className="mt-2">
-          {message && <span className="green">{message}</span>}
-          {error && <span className="red">{error}</span>}
-        </div>
       </div>
     </div>
   );

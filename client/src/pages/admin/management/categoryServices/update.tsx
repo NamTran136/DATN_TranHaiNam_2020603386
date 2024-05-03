@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { API_URL, CATEGORY, CategoryDto } from "../../../../types";
 import axios from "axios";
 import { useAppSelector } from "../../../../store/store";
+import toast from "react-hot-toast";
 
 const update = () => {
   const navigate = useNavigate();
@@ -27,15 +28,11 @@ const update = () => {
   };
   const { token } = useAppSelector((state) => state.user);
 
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const handleBack = () => {
     navigate("/admin/categories");
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
     axios
       .put(`${API_URL}${CATEGORY}`, value, {
         headers: {
@@ -46,14 +43,12 @@ const update = () => {
       })
       .then((res) => {
         if (res.status === 204) {
-          setMessage("Edit a category successfully.");
-          setError("");
+          toast.success("Edit a category successfully.");
         }
       })
       .catch((err) => {
         console.log(err.message);
-        setError("Edit a category unsuccessfully.");
-        setMessage("");
+        toast.error("Edit a category unsuccessfully.");
       });
   };
   return (
@@ -93,10 +88,6 @@ const update = () => {
             </Link>
           </div>
         </form>
-        <div className="mt-2">
-          {message && <span className="green">{message}</span>}
-          {error && <span className="red">{error}</span>}
-        </div>
       </div>
     </div>
   );

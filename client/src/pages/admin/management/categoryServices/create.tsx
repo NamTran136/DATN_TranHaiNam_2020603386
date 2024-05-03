@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { API_URL, CATEGORY, CategoryToEditDto } from "../../../../types";
 import axios from "axios";
 import { useAppSelector } from "../../../../store/store";
+import toast from "react-hot-toast";
 
 const create = () => {
     const navigate = useNavigate();
@@ -10,8 +11,6 @@ const create = () => {
     const [value, setValue] = useState<CategoryToEditDto>({
         name: ""
     });
-    const [message, setMessage] = useState("");
-    const [error, setError] = useState("");
     const handleBack = () => {
         navigate("/admin/categories");
     }
@@ -25,15 +24,13 @@ const create = () => {
         }
       }).then(res => {
         if(res.status === 204) {
-            setMessage("Add a category successfully.");
-            setError("");
+            toast.success("Add category successfully.");
             setValue({...value, name: ""})
         }
       })
       .catch(err => {
         console.log(err.message);
-        setError("Add a category unsuccessfully.");
-        setMessage("");
+        toast.error("Add a category unsuccessfully.");
       });
     };
   return (
@@ -62,10 +59,6 @@ const create = () => {
             </Link>
           </div>
         </form>
-        <div className="mt-2">
-          {message && <span className="green">{message}</span>}
-          {error && <span className="red">{error}</span>}
-        </div>
       </div>
     </div>
   );

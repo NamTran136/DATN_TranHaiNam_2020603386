@@ -41,4 +41,5 @@
 @mixin square($s: 1rem) {
   height: $s;
   width: $s;
+  border-radius: 9999px;
 }

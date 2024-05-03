@@ -10,29 +10,21 @@ const SearchBar = () => {
   const navigate = useNavigate();
     const { searchInput } = useAppSelector((state) => state.search);
   const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<BookDto[]>([]);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = () => {
-    setIsLoading(true);
     axios
       .get(API_URL + BOOK)
       .then((response) => {
         const books: BookDto[] = response.data;
         setData(books);
-        setError(null);
       })
       .catch((err) => {
-        setError("Không có sách nào");
         console.log(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   };
 
@@ -52,7 +44,6 @@ const SearchBar = () => {
     dispatch(searchSetValue(value));
     fetchResults(value);
   };
-  console.log(isLoading, error && "error: " + error);
   return (
     <div className="input-wrapper">
       <FaSearch id="search-icon" onClick={() => {

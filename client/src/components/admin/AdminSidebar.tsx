@@ -48,7 +48,7 @@ const AdminSidebar = () => {
             location={location}
           />
           <Li
-            url="/admin/users"
+            url="/admin/accounts"
             text="User"
             Icon={FaUser}
             location={location}

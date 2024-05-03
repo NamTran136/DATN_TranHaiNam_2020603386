@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { app } from "../../firebase";
 import axios from "axios";
 import { API_URL, AUTH, GoogleDto } from "../../types";
-import { useState } from "react";
 import { useAppDispatch } from "../../store/store";
 import { signInFailure, signInStart, signInSuccess } from "../../store/features/userSlice";
+import toast from "react-hot-toast";
 
 export default function OAuth() {
   const navigate = useNavigate();
@@ -48,14 +48,19 @@ export default function OAuth() {
       );
       if (status !== 200) {
         dispatch(signInFailure());
+        toast.error("Có lỗi xảy ra khi đăng nhập với Google");
         return;
       }
       localStorage.setItem("token", data);
+      const now = new Date().getTime();
+      localStorage.setItem("expiredTime", now.toString());
       dispatch(signInSuccess(data));
+      toast.success("Đăng nhập thành công!")
       navigate("/");
     } catch (err) {
       dispatch(signInFailure());
       console.log("Could not login with Google " + err);
+      toast.error("Có lỗi xảy ra khi đăng nhập với Google")
     }
   };
   return (

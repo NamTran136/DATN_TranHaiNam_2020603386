@@ -22,7 +22,7 @@ const ReadingBook = lazy(() => import("./pages/public/readingBook"));
 const Review = lazy(() => import("./pages/public/review"));
 // Admin
 const Dashboard = lazy(() => import("./pages/admin/dashboard"));
-const UserService = lazy(() => import("./pages/admin/UserService"));
+const AccountService = lazy(() => import("./pages/admin/AccountService"));
 const BookService = lazy(() => import("./pages/admin/BookService"));
 const CategoryService = lazy(() => import("./pages/admin/CategoryService"));
 const Comments = lazy(() => import("./pages/admin/Comments"));
@@ -46,6 +46,18 @@ const BookUpdate = lazy(
 );
 const BookDelete = lazy(
   () => import("./pages/admin/management/bookServices/delete")
+);
+const AccountRead = lazy(
+  () => import("./pages/admin/management/accountServices/read")
+);
+const AccountDelete = lazy(
+  () => import("./pages/admin/management/accountServices/delete")
+);
+const CommentRead = lazy(
+  () => import("./pages/admin/management/commentServices/read")
+);
+const CommentDelete = lazy(
+  () => import("./pages/admin/management/commentServices/delete")
 );
 
 const SignIn = lazy(() => import("./pages/public/signin"));
@@ -80,7 +92,7 @@ const App = () => {
             <Route path="/admin/dashboard" element={<Dashboard />} />
             <Route path="/admin/books" element={<BookService />} />
             <Route path="/admin/categories" element={<CategoryService />} />
-            <Route path="/admin/users" element={<UserService />} />
+            <Route path="/admin/accounts" element={<AccountService />} />
             <Route path="/admin/comments" element={<Comments />} />
             <Route path="/admin/advertisement" element={<Advertisement />} />
             <Route path="/admin/confirmation" element={<Confirmation />} />
@@ -102,6 +114,12 @@ const App = () => {
             <Route path="/admin/book/read/:id" element={<BookRead />} />
             <Route path="/admin/book/edit/:id" element={<BookUpdate />} />
             <Route path="/admin/book/delete/:id" element={<BookDelete />} />
+            {/* Account */}
+            <Route path="/admin/account/read/:id" element={<AccountRead />} />
+            <Route path="/admin/account/delete/:id" element={<AccountDelete />} />
+            {/* Comments */}
+            <Route path="/admin/comment/read/:id" element={<CommentRead />} />
+            <Route path="/admin/comment/delete/:id" element={<CommentDelete />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

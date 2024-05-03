@@ -5,7 +5,7 @@ import { signInSuccess, signOut } from "../store/features/userSlice";
 const privateRoute = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
-  var setupTime = localStorage.getItem("setupTime");
+  var setupTime = localStorage.getItem("expiredTime");
   var now = new Date().getTime();
   if(setupTime) {
     if(now - parseInt(setupTime) > 3 * 60 * 60 * 1000) {

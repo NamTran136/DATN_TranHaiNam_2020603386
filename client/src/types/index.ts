@@ -95,6 +95,13 @@ export type UserDto = {
   image: string;
 };
 
+export type UserPrivateDto = {
+  id: number;
+  username: string;
+  email: string;
+  imageUrl: string;
+};
+
 export type CommentDto = {
   id: number;
   content: string;

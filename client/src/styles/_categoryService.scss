@@ -1,8 +1,9 @@
 .dashboard-category-box {
     background-color: #fff;
     padding: 2rem;
+    margin: 1rem 0;
     overflow: auto;
-    @include square(100%);
+    border-radius: 20px;
 }
 
 .create-category-btn {

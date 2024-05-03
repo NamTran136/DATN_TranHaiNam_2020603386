@@ -38,8 +38,8 @@ const { loading } = useAppSelector((state) => state.user);
         return;
       }
       localStorage.setItem("token", data);
-      var now = new Date().getTime();
-      localStorage.setItem("setupTime", now.toString());
+      const now = new Date().getTime();
+      localStorage.setItem("expiredTime", now.toString());
       dispatch(signInSuccess(data));
       toast.success("Đăng nhập thành công!");
       navigate("/admin");

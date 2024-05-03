@@ -52,6 +52,8 @@ export default function OAuth() {
         return;
       }
       localStorage.setItem("token", data);
+      const now = new Date().getTime();
+      localStorage.setItem("expiredTime", now.toString());
       dispatch(signInSuccess(data));
       toast.success("Đăng nhập thành công!")
       navigate("/");

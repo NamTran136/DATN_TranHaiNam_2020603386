@@ -1,9 +1,12 @@
 using API.Data;
 using API.Data.DatabaseInit;
 using API.Services.Auth;
+using API.Services.BlogServices;
 using API.Services.BookServices;
 using API.Services.CategoryServices;
 using API.Services.CommentServices;
+using API.Services.CommonServices;
+using API.Services.FeedbackServices;
 using API.Services.UserServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +44,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<ICommonService, CommonService>();
+builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+builder.Services.AddScoped<IBlogService, BlogService>();
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>

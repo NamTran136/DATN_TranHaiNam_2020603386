@@ -11,6 +11,6 @@ namespace API.DTOs
         public byte[] PasswordSalt { get; set; }
         public bool IsAdmin { get; set; } = false;
         public string ImageUrl { get; set; }
-        public int Point { get; set; } = 20;
+        public int Point { get; set; } 
     }
 }

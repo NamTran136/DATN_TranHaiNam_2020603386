@@ -83,43 +83,6 @@ namespace API.Controllers
             return books;
         }
 
-        [HttpPost("UploadImage")]
-        public async Task<ActionResult> UploadImage()
-        {
-            bool results = false;
-            try
-            {
-                var uploadedFiles = Request.Form.Files;
-                foreach(IFormFile source in uploadedFiles)
-                {
-                    string fileName = source.FileName;
-                    string filePath = GetFilePath(fileName);
-
-                    if(!System.IO.Directory.Exists(filePath))
-                    {
-                        System.IO.Directory.CreateDirectory(filePath);
-                    }
-
-                    string imagePath = fileName + "\\image.png";
-
-                    if (System.IO.File.Exists(imagePath))
-                    {
-                        System.IO.File.Delete(imagePath);
-                    }
-                    using(FileStream stream = System.IO.File.Create(imagePath))
-                    {
-                        await source.CopyToAsync(stream); 
-                        results = true;
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-
-            }
-            return Ok(results);
-        }
-
         [HttpPut, Authorize(Roles = "Admin")]
         public IActionResult Update(BookAddEditDto model)
         {
@@ -143,6 +106,35 @@ namespace API.Controllers
             }
             return BadRequest("Something seems to have gone wrong.");
         }
+        [HttpPut("downloadingbook"), Authorize(Roles = "User")]
+        public IActionResult AddDownloadedBookTotal(FavouriteBookDto model)
+        {
+            var result = _bookService.AddDownloadedBook(model);
+            switch (result)
+            {
+                case 0:
+                    return NotFound("Book was not found");
+                case 1:
+                    return NotFound("User was not found");
+                case 3:
+                    return BadRequest("User is out of points");
+                case 2:
+                    return NoContent();
+                default:
+                    return BadRequest();
+            }
+        }
+
+        [HttpPut("readingbook={id}")]
+        public IActionResult AddWatchedBookTotal(int id)
+        {
+            var result = _bookService.AddWatchedBook(id);
+            if(result)
+            {
+                return NoContent();
+            }
+            return NotFound();
+        }
 
         [HttpDelete("{id}"), Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
@@ -153,27 +145,6 @@ namespace API.Controllers
             }
             return BadRequest("Invalid book Id.");
         }
-        [NonAction]
-        private string GetFilePath(string productCode)
-        {
-            return this._webHostEnvironment.WebRootPath + "\\Uploads\\Books\\"+productCode;
-        }
-        [NonAction]
-        private string GetImageByProduct(string productCode)
-        {
-            string imageUrl = string.Empty;
-            string hostUrl = "https://localhost:7009/";
-            string filePath = GetFilePath(productCode);
-            string imagePath = filePath + "\\image.png";
-            if (!System.IO.File.Exists(imagePath))
-            {
-                imageUrl = hostUrl + "/Uploads/Common/NoImage.png";
-            }
-            else
-            {
-                imageUrl = hostUrl + "/Uploads/Books/" + productCode + "/image.png";
-            }
-            return imageUrl;
-        }
+        
     }
 }

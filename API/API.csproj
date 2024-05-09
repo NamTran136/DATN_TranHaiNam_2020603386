@@ -18,4 +18,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Upload\Files\" />
+    <Folder Include="wwwroot\Uploads\BlogThumbnail\" />
+  </ItemGroup>
+
 </Project>

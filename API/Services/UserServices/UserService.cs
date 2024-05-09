@@ -37,7 +37,7 @@ namespace API.Services.UserServices
 
         public List<PublicUserDto> GetAll()
         {
-            var users = _dBcontext.Users.ToList();
+            var users = _dBcontext.Users.Where(u => u.IsAdmin == false).ToList();
             var toReturn = new List<PublicUserDto>();
             foreach (var user in users)
             {

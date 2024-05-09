@@ -5,6 +5,7 @@ import SubItem from "../../components/public/SubItem";
 import Menu from "../../components/public/Menu";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { removeAccents } from "../../utils/appUtils";
 
 
 const searchPage = () => {
@@ -12,7 +13,7 @@ const searchPage = () => {
     useEffect(() => {
       fetchData();
     }, []);
-const [data, setData] = useState<BookDto[]>([]);
+    const [data, setData] = useState<BookDto[]>([]);
   
     const fetchData = () => {
       axios
@@ -30,9 +31,15 @@ const [data, setData] = useState<BookDto[]>([]);
         return (
           value &&
           book &&
-          (book.author.toLowerCase().includes(value.toLowerCase()) ||
-            book.title.toLowerCase().includes(value.toLowerCase()) ||
-            book.category.toLowerCase().includes(value.toLowerCase()))
+          (removeAccents(book.author.toLowerCase()).includes(
+            removeAccents(value.toLowerCase())
+          ) ||
+            removeAccents(book.title)
+              .toLowerCase()
+              .includes(removeAccents(value.toLowerCase())) ||
+            removeAccents(book.category)
+              .toLowerCase()
+              .includes(removeAccents(value.toLowerCase())))
         );
       });
     };

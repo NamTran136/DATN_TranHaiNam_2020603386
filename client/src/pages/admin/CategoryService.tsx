@@ -5,6 +5,7 @@ import { API_URL, CATEGORY, CategoryDto, ColumnProps, SortOrder } from "../../ty
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { FaCircleArrowUp } from "react-icons/fa6";
+import Pagination from "../../components/public/Pagination";
 
 type SortFunctionProps = {
   tableData: CategoryDto[];
@@ -49,11 +50,16 @@ const columns: ColumnProps<CategoryDto>[] = [
 
 const CategoryService = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isFold, setIsFold] = useState(false);
   const [data, setData] = useState<CategoryDto[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [sortKey, setSortKey] = useState<keyof CategoryDto>("id");
+
+  const [page, setPage] = useState(1);
+  const [limit] = useState(5);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
     fetchData();
@@ -68,6 +74,7 @@ const CategoryService = () => {
       })
       .then((objectData: CategoryDto[]) => {
         setData(objectData);
+        setTotalCount(Math.ceil(objectData.length / limit));
       })
       .catch((err) => {
         setError("List of Categories unavailable");
@@ -77,7 +84,25 @@ const CategoryService = () => {
         setIsLoading(false);
       });
   };
-
+  function handlePageChange(value: number | string) {
+    if (value === "&laquo;" || value === "... ") {
+      setPage(1);
+    } else if (value === "&lsaquo;") {
+      if (page !== 1) {
+        setPage(page - 1);
+      }
+    } else if (value === "&rsaquo;") {
+      if (page !== totalCount) {
+        setPage(page + 1);
+      }
+    } else if (value === "&raquo;" || value === " ...") {
+      setPage(totalCount);
+    } else {
+      if (typeof value === "number") {
+        setPage(value);
+      }
+    }
+  }
   function sortData({ tableData, sortKey, reverse }: SortFunctionProps) {
     if (!sortKey) return tableData;
     const sortedData = tableData.sort((a: CategoryDto, b: CategoryDto) => {
@@ -97,8 +122,14 @@ const CategoryService = () => {
     setSortKey(key);
   }
   return (
-    <div className="admin-container">
-      <AdminSidebar />
+    <div
+      className="admin-container"
+      style={{
+        gridTemplateColumns: isFold ? "1fr 15fr" : "1fr 4fr",
+        gap: isFold ? "0.5rem" : "2rem",
+      }}
+    >
+      <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
       <main className="dashboard">
         <div className="widget-container">
           <div className="dashboard-category-box">
@@ -125,35 +156,44 @@ const CategoryService = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedData().map((d, i) => (
-                    <tr key={i}>
-                      <td>{d.id}</td>
-                      <td>{d.name}</td>
-                      <td className="btn-wrapper">
-                        <Link
-                          className="bg-blue"
-                          to={`/admin/category/read/${d.id}`}
-                        >
-                          Read
-                        </Link>
-                        <Link
-                          className="bg-orange"
-                          to={`/admin/category/edit/${d.id}`}
-                        >
-                          Edit
-                        </Link>
-                        <Link
-                          className="bg-red"
-                          to={`/admin/category/delete/${d.id}`}
-                        >
-                          Delete
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
+                  {sortedData()
+                    .slice((page - 1) * limit, (page - 1) * limit + limit)
+                    .map((d, i) => (
+                      <tr key={i}>
+                        <td>{d.id}</td>
+                        <td>{d.name}</td>
+                        <td className="btn-wrapper">
+                          <Link
+                            className="bg-blue"
+                            to={`/admin/category/read/${d.id}`}
+                          >
+                            Read
+                          </Link>
+                          <Link
+                            className="bg-orange"
+                            to={`/admin/category/edit/${d.id}`}
+                          >
+                            Edit
+                          </Link>
+                          <Link
+                            className="bg-red"
+                            to={`/admin/category/delete/${d.id}`}
+                          >
+                            Delete
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             )}
+            <Pagination
+              totalPages={totalCount}
+              page={page}
+              limit={limit}
+              siblings={1}
+              onPageChange={handlePageChange}
+            />
             {error && <span className="red">Có lỗi khi tải</span>}
           </div>
         </div>

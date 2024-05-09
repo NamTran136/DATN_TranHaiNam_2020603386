@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { API_URL, CATEGORY, CategoryDto } from "../../types";
 import axios from "axios";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoMdHeart } from "react-icons/io";
 import { useAppSelector } from "../../store/store";
+import { BsEyeFill } from "react-icons/bs";
 const Header = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<CategoryDto[]>([]);
@@ -78,13 +79,44 @@ const Header = () => {
           </li>
         </ul>
         <div className="auth-container">
+          {user.username !== "" && 
+          <Link to="/favouritebooks">
+            <IoMdHeart
+              size={28}
+              style={{
+                borderRadius: "50%",
+                color: "red",
+                cursor: "pointer",
+                marginRight: "12px",
+              }}
+            />
+          </Link>
+          }
+          {user.username !== "" && 
+          <Link to="/watchedbooks">
+            <BsEyeFill
+              size={28}
+              style={{
+                borderRadius: "50%",
+                color: "green",
+                cursor: "pointer",
+                marginRight: "12px",
+              }}
+            />
+          </Link>
+          }
           <Link to="/profile">
             {user.username !== "" ? (
               <img src={user.image} alt={user.username} className="avatar" />
             ) : (
-              <button className="btn-signin" onClick={() => {
-                localStorage.setItem("previousUrl", window.location.href);
-              }}>Đăng nhập</button>
+              <button
+                className="btn-signin"
+                onClick={() => {
+                  localStorage.setItem("previousUrl", window.location.href);
+                }}
+              >
+                Đăng nhập
+              </button>
             )}
           </Link>
         </div>

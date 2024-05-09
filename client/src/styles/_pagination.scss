@@ -2,10 +2,7 @@
     @include flex(row, center, center, 0);
     list-style: none;
     margin-bottom: 16px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    
     .pagination-item {
         margin: 0 8px;
         .pagination-item__link {

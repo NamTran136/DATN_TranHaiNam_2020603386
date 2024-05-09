@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import OAuth from "../../components/public/OAuth";
 import axios from "axios";
 import { AUTH, API_URL, LoginDto } from "../../types";
@@ -14,7 +14,6 @@ function signin() {
 const dispatch = useAppDispatch();
 
 const { loading } = useAppSelector((state) => state.user);
-  const navigate = useNavigate();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };

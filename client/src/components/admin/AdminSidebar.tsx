@@ -1,17 +1,24 @@
 import { IconType } from "react-icons";
-import { FaBookOpen, FaUser } from "react-icons/fa";
-import { IoMdSettings } from "react-icons/io";
+import { FaBlogger, FaBookOpen, FaCommentDots, FaUser } from "react-icons/fa";
+import { IoMdExit, IoMdSettings } from "react-icons/io";
 import { MdCategory } from "react-icons/md";
-import { RiDashboardFill } from "react-icons/ri";
+import { RiDashboardFill, RiFeedbackFill, RiMenuUnfoldFill } from "react-icons/ri";
 import { Location, Link, useLocation } from "react-router-dom";
 import { useAppDispatch } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "../../store/features/userSlice";
+import { RiMenuFoldFill } from "react-icons/ri";
 
-const AdminSidebar = () => {
+interface AdminSidebarProps {
+  isFold: boolean;
+  setIsFold: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AdminSidebar = ({ isFold, setIsFold }: AdminSidebarProps) => {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const handleSignOut = async () => {
     try {
       localStorage.clear();
@@ -22,73 +29,117 @@ const AdminSidebar = () => {
     }
   };
   return (
-    <aside>
-      <div className="logo">
+    <aside style={{ padding: isFold ? "0" : "1rem" }}>
+      <div className="logo" style={{ display: isFold ? "none" : "block" }}>
         <img className="logo-image" src="/ICon.png" />
       </div>
-      <div className="wrapper">
-        <h5>Dashboard</h5>
+      {!isFold ? (
+        <RiMenuFoldFill
+          size={32}
+          className="menu-icon"
+          onClick={() => setIsFold(!isFold)}
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+          }}
+        />
+      ) : (
+        <RiMenuUnfoldFill
+          size={32}
+          className="menu-icon"
+          onClick={() => setIsFold(!isFold)}
+          style={{
+            display: "block",
+            margin: "1rem auto",
+          }}
+        />
+      )}
+
+      <div
+        className="wrapper"
+        style={{
+          margin: isFold ? "1rem" : "2rem 1rem",
+        }}
+      >
+        <h5 style={{ display: isFold ? "none" : "block" }}>Dashboard</h5>
         <ul>
           <Li
             url="/admin/dashboard"
             text="Dashboard"
             Icon={RiDashboardFill}
             location={location}
+            isFold={isFold}
           />
           <Li
             url="/admin/books"
             text="Book"
             Icon={FaBookOpen}
             location={location}
+            isFold={isFold}
           />
           <Li
             url="/admin/categories"
             text="Category"
             Icon={MdCategory}
             location={location}
+            isFold={isFold}
           />
           <Li
             url="/admin/accounts"
             text="User"
             Icon={FaUser}
             location={location}
+            isFold={isFold}
           />
         </ul>
       </div>
       <div className="wrapper">
-        <h5>Website</h5>
+        <h5 style={{ display: isFold ? "none" : "block" }}>Website</h5>
         <ul>
           <Li
             url="/admin/comments"
             text="Comments"
-            Icon={RiDashboardFill}
+            Icon={FaCommentDots}
             location={location}
+            isFold={isFold}
           />
           <Li
-            url="/admin/advertisement"
-            text="Advertisement"
-            Icon={FaBookOpen}
+            url="/admin/blogs"
+            text="Blogs"
+            Icon={FaBlogger}
             location={location}
+            isFold={isFold}
           />
           <Li
-            url="/admin/confirmation"
-            text="Confirmation"
-            Icon={MdCategory}
+            url="/admin/feedbacks"
+            text="Feedbacks"
+            Icon={RiFeedbackFill}
             location={location}
+            isFold={isFold}
           />
         </ul>
       </div>
       <div className="wrapper">
-        <h5>Settings</h5>
+        <h5 style={{ display: isFold ? "none" : "block" }}>Settings</h5>
         <ul>
           <Li
             url="/admin/settings"
             text="Settings"
             Icon={IoMdSettings}
             location={location}
+            isFold={isFold}
           />
-          <li>
-            <button onClick={handleSignOut}>Sign out</button>
+          <li
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <button onClick={handleSignOut}>
+              {isFold ? <IoMdExit size={20} /> : <span>Sign out</span>}
+            </button>
           </li>
         </ul>
       </div>
@@ -101,14 +152,16 @@ interface LiProps {
   text: string;
   location: Location;
   Icon: IconType;
+  isFold: boolean;
 }
 
-const Li = ({ url, text, location, Icon }: LiProps) => (
+const Li = ({ url, text, location, Icon, isFold }: LiProps) => (
   <li
     style={{
       backgroundColor: location.pathname.includes(url)
         ? "rgba(0, 115, 255, 0.1)"
         : "rgb(255, 255, 255)",
+      margin: isFold ? "0" : "",
     }}
   >
     <Link
@@ -120,7 +173,7 @@ const Li = ({ url, text, location, Icon }: LiProps) => (
       }}
     >
       <Icon />
-      {text}
+      {isFold ? "" : text}
     </Link>
   </li>
 );

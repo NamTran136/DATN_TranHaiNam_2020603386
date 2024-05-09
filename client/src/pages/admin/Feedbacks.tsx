@@ -1,12 +1,20 @@
 import { BsSearch } from "react-icons/bs";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import { FaRegBell } from "react-icons/fa";
+import { useState } from "react";
 
 
-const Advertisement = () => {
+const Confirmation = () => {
+  const [isFold, setIsFold] = useState(false);
   return (
-    <div className="admin-container">
-      <AdminSidebar />
+    <div
+      className="admin-container"
+      style={{
+        gridTemplateColumns: isFold ? "1fr 15fr" : "1fr 4fr",
+        gap: isFold ? "0.5rem" : "2rem",
+      }}
+    >
+      <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
       <main className="dashboard">
         <div className="bar">
           <BsSearch />
@@ -17,10 +25,12 @@ const Advertisement = () => {
             alt="User"
           />
         </div>
-        <div className="widget-container">Dịch vụ đang trong quá trình phát triển</div>
+        <div className="widget-container">
+          Dịch vụ đang trong quá trình phát triển
+        </div>
       </main>
     </div>
   );
 };
 
-export default Advertisement;
+export default Confirmation;

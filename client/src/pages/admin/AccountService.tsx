@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { FaCircleArrowUp } from "react-icons/fa6";
 import { useAppSelector } from "../../store/store";
+import Pagination from "../../components/public/Pagination";
 
 type SortFunctionProps = {
   tableData: UserPrivateDto[];
@@ -61,6 +62,7 @@ const columns: ColumnProps<UserPrivateDto>[] = [
 ];
 
 const AccountService = () => {
+  const [isFold, setIsFold] = useState(false);
   const { token } = useAppSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<UserPrivateDto[]>([]);
@@ -68,6 +70,10 @@ const AccountService = () => {
 
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [sortKey, setSortKey] = useState<keyof UserPrivateDto>("id");
+
+  const [page, setPage] = useState(1);
+  const [limit] = useState(4);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
     fetchData();
@@ -88,6 +94,7 @@ const AccountService = () => {
       })
       .then((objectData: UserPrivateDto[]) => {
         setData(objectData);
+        setTotalCount(Math.ceil(objectData.length / limit));
       })
       .catch((err) => {
         setError("List of Accounts unavailable");
@@ -97,7 +104,25 @@ const AccountService = () => {
         setIsLoading(false);
       });
   };
-
+  function handlePageChange(value: number | string) {
+    if (value === "&laquo;" || value === "... ") {
+      setPage(1);
+    } else if (value === "&lsaquo;") {
+      if (page !== 1) {
+        setPage(page - 1);
+      }
+    } else if (value === "&rsaquo;") {
+      if (page !== totalCount) {
+        setPage(page + 1);
+      }
+    } else if (value === "&raquo;" || value === " ...") {
+      setPage(totalCount);
+    } else {
+      if (typeof value === "number") {
+        setPage(value);
+      }
+    }
+  }
   function sortData({ tableData, sortKey, reverse }: SortFunctionProps) {
     if (!sortKey) return tableData;
     const sortedData = tableData.sort((a: UserPrivateDto, b: UserPrivateDto) => {
@@ -117,8 +142,14 @@ const AccountService = () => {
     setSortKey(key);
   }
   return (
-    <div className="admin-container">
-      <AdminSidebar />
+    <div
+      className="admin-container"
+      style={{
+        gridTemplateColumns: isFold ? "1fr 15fr" : "1fr 4fr",
+        gap: isFold ? "0.5rem" : "2rem",
+      }}
+    >
+      <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
       <main className="dashboard">
         <div className="widget-container">
           <div className="dashboard-category-box">
@@ -145,33 +176,53 @@ const AccountService = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedData().map((d, i) => (
-                    <tr key={i}>
-                      <td>{d.id}</td>
-                      <td>{d.username}</td>
-                      <td>{d.email}</td>
-                      <td>
-                        <img style={{borderRadius: "50%"}} src={d.imageUrl} alt={d.username} />
-                      </td>
-                      <td className="btn-wrapper">
-                        <Link
-                          className="bg-blue"
-                          to={`/admin/account/read/${d.id}`}
+                  {sortedData()
+                    .slice((page - 1) * limit, (page - 1) * limit + limit)
+                    .map((d, i) => (
+                      <tr key={i}>
+                        <td>{d.id}</td>
+                        <td>{d.username}</td>
+                        <td>{d.email}</td>
+                        <td>
+                          <img
+                            style={{ borderRadius: "50%" }}
+                            src={d.imageUrl}
+                            alt={d.username}
+                          />
+                        </td>
+                        <td
+                          className="btn-wrapper"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            height: "100px",
+                          }}
                         >
-                          Read
-                        </Link>
-                        <Link
-                          className="bg-red"
-                          to={`/admin/account/delete/${d.id}`}
-                        >
-                          Delete
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
+                          <Link
+                            className="bg-blue"
+                            to={`/admin/account/read/${d.id}`}
+                          >
+                            Read
+                          </Link>
+                          <Link
+                            className="bg-red"
+                            to={`/admin/account/delete/${d.id}`}
+                          >
+                            Delete
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             )}
+            <Pagination
+              totalPages={totalCount}
+              page={page}
+              limit={limit}
+              siblings={1}
+              onPageChange={handlePageChange}
+            />
             {error && <span className="red">Có lỗi khi tải</span>}
           </div>
         </div>

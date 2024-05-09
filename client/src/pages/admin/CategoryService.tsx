@@ -194,7 +194,7 @@ const CategoryService = () => {
               siblings={1}
               onPageChange={handlePageChange}
             />
-            {error && <span className="red">Có lỗi khi tải</span>}
+            {error && <div className="red">{error}</div>}
           </div>
         </div>
         <Link to="/admin/category/new" className="create-category-btn">

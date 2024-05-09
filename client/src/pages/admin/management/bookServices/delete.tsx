@@ -21,6 +21,8 @@ const deleteCategory = () => {
     imageUrl: "",
     isPrivate: false,
     categoryId: 0,
+    numOfDownloads: 0,
+    numOfViews: 0,
     category: "",
   });
   const fetchData = () => {

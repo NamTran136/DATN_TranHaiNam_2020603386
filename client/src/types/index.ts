@@ -133,3 +133,14 @@ export type BlogDto = {
   time: string;
   fileUrl: string;
 }
+
+export type FeedbackDto = {
+  id: number;
+  username: string;
+  avatar: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  filename: string;
+  isActive: boolean; 
+}

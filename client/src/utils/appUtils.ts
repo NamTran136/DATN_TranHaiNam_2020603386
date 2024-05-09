@@ -59,7 +59,6 @@ export function Now() {
   var year = now.getFullYear();
   var hours = now.getHours();
   var minutes = now.getMinutes();
-  var seconds = now.getSeconds();
 
   // Định dạng lại chuỗi theo yêu cầu "dd/MM/yyyy hh:ss"
   var formattedDate =
@@ -73,4 +72,10 @@ export function Now() {
     ":" +
     ("0" + minutes).slice(-2);
     return formattedDate;
+}
+
+export function TimeString() {
+  const date = new Date(); // or any other date object
+  const dateString = date.toLocaleString(); 
+  return dateString;
 }

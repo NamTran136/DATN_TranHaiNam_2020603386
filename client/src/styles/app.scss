@@ -13,6 +13,7 @@
 @import "review";
 @import "blogTable";
 @import "createBlog";
+@import "feedbackAdmin";
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -182,6 +183,11 @@ button {
   cursor: not-allowed;
   background: rgba(0, 0, 0, .08);
   color: rgba(0, 0, 0, .3);
+}
+
+.btn-disabled {
+  opacity: 0.6!important;
+  cursor: default!important;
 }
 
 // Public

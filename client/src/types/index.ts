@@ -134,6 +134,13 @@ export type BlogDto = {
   fileUrl: string;
 }
 
+export type BlogInfoDto = {
+  id: number;
+  title: string;
+  time: string;
+  content: string;
+};
+
 export type FeedbackDto = {
   id: number;
   username: string;

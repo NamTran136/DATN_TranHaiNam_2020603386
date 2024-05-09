@@ -51,7 +51,7 @@ export default function OAuth() {
       }
       localStorage.setItem("token", data);
       const now = new Date().getTime();
-      localStorage.setItem("expiredTime", now.toString());
+      localStorage.setItem("setupTime", now.toString());
       dispatch(signInSuccess(data));
       toast.success("Đăng nhập thành công!")
       window.location.href =

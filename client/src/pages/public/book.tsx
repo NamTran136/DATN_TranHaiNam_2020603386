@@ -31,19 +31,17 @@ const book = () => {
   const [error, setError] = useState<string | null>(null);
 
   const { bookId } = useParams();
-  let id;
+  let id=0;
   if (bookId === undefined) {
-    id = 0;
+    id=0;
   } else {
-    id = parseInt(bookId);
+    id=parseInt(bookId);
   }
   useEffect(() => {
     fetchData();
+    checkLiked(id, user.email);
     localStorage.setItem("previousUrl", window.location.href);
-  }, [bookId]);
-  useEffect(() => {
-    checkLiked();
-  }, [user.email]);
+  }, [token]);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -63,12 +61,11 @@ const book = () => {
       });
   };
 
-  const checkLiked = async () => {
+  const checkLiked = async (id: number, email: string) => {
     await axios
-      .get(API_URL + FBOOK + `/bookId=${bookId}/email=${user.email}`)
+      .get(API_URL + FBOOK + `/bookId=${id}/email=${email}`)
       .then((response) => {
         setIsLiked(response.data);
-        console.log(response.status);
       })
       .catch((err) => {
         console.log(err);

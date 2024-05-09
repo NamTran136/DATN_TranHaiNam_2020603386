@@ -21,6 +21,7 @@ const SearchPage = lazy(() => import("./pages/public/searchPage"));
 const Book = lazy(() => import("./pages/public/book"));
 const ReadingBook = lazy(() => import("./pages/public/readingBook"));
 const Review = lazy(() => import("./pages/public/review"));
+const BlogInfo = lazy(() => import("./pages/public/blogInfo"));
 const LikedBooks = lazy(() => import("./pages/public/LikedBooks"));
 const WatchedBooks = lazy(() => import("./pages/public/WatchedBooks"));
 // Admin
@@ -87,6 +88,7 @@ const App = () => {
             <Route path="book/:bookId" element={<Book />} />
             <Route path="reading-book/:bookId" element={<ReadingBook />} />
             <Route path="/review" element={<Review />} />
+            <Route path="/bloginfo/:id" element={<BlogInfo />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/profile" element={<Profile />} />
               <Route path="/feedback" element={<Feedback />} />

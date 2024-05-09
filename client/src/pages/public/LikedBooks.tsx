@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { API_URL, BOOK, BookDto } from "../../types";
+import { API_URL, BookDto, FBOOK } from "../../types";
 import axios from "axios";
 import SubItem from "../../components/public/SubItem";
 import Menu from "../../components/public/Menu";
 import Title from "../../components/public/Title";
 import { Link } from "react-router-dom";
 import Pagination from "../../components/public/Pagination";
+import { useAppSelector } from "../../store/store";
 
-const allBook = () => {
+const LikedBooks = () => {
+  const { user, token } = useAppSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<BookDto[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -20,12 +22,18 @@ const allBook = () => {
     fetchData();
   }, []);
   useEffect(() => {
-     setBooks(data.slice((page - 1) * limit, (page - 1) * limit + limit));
+    setBooks(data.slice((page - 1) * limit, (page - 1) * limit + limit));
   }, [data]);
-  const fetchData = async() => {
+  const fetchData = async () => {
     setIsLoading(true);
     await axios
-      .get(API_URL + BOOK)
+      .get(API_URL + FBOOK + `?email=${user.email}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         const books: BookDto[] = response.data;
         setData(books);
@@ -42,21 +50,20 @@ const allBook = () => {
   };
 
   function handlePageChange(value: number | string) {
-    if(value === "&laquo;" || value === "... ") {
+    if (value === "&laquo;" || value === "... ") {
       setPage(1);
-    }
-    else if(value === "&lsaquo;") {
-      if(page !== 1) {
+    } else if (value === "&lsaquo;") {
+      if (page !== 1) {
         setPage(page - 1);
       }
-    } else if(value === "&rsaquo;") {
-      if(page !== totalCount) {
+    } else if (value === "&rsaquo;") {
+      if (page !== totalCount) {
         setPage(page + 1);
       }
     } else if (value === "&raquo;" || value === " ...") {
       setPage(totalCount);
     } else {
-      if(typeof value === "number") {
+      if (typeof value === "number") {
         setPage(value);
       }
     }
@@ -68,9 +75,11 @@ const allBook = () => {
   return (
     <div className="allBook-container">
       <div className="allBook-content">
-        <Title text="Tất cả sách" />
+        <Title text="Sách yêu thích" />
         {isLoading && <span>Loading...</span>}
-        {error && <span className="red mt-2">Hiện tại chưa có sách nào</span>}
+        {error && (
+          <span className="red mt-2">Hiện tại chưa có sách yêu thích</span>
+        )}
         <div className="list-book">
           {books.length > 0 &&
             books.map((book, index) => (
@@ -100,4 +109,4 @@ const allBook = () => {
   );
 };
 
-export default allBook;
+export default LikedBooks;

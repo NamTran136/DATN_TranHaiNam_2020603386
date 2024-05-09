@@ -3,6 +3,8 @@ import { API_URL, BOOK, BookDto } from "../../../../types"
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { AiOutlineDownload } from "react-icons/ai";
+import { IoEyeOutline } from "react-icons/io5";
 
 const read = () => {
     const navigate = useNavigate();
@@ -18,6 +20,8 @@ const read = () => {
       author: "",
       language: "",
       imageUrl: "",
+      numOfDownloads: 0,
+      numOfViews: 0,
       isPrivate: false,
       categoryId: 0,
       category: "",
@@ -63,8 +67,28 @@ const read = () => {
                 <div className="mt-2">Tác giả: {value?.author}</div>
                 <div className="mt-2">Thể loại: {value?.category}</div>
                 <div className="mt-2">Ngôn ngữ: {value?.language}</div>
-
-                { value?.isPrivate && (
+                <div
+                  className="mt-2"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginRight: "2rem",
+                    }}
+                  >
+                    <AiOutlineDownload /> {value?.numOfDownloads}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <IoEyeOutline /> {value?.numOfViews}
+                  </div>
+                </div>
+                {value?.isPrivate && (
                   <div className="red book-message">
                     Vui lòng đăng nhập trước khi tải hoặc đọc ebook
                   </div>

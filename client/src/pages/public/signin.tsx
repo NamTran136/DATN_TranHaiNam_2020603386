@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import OAuth from "../../components/public/OAuth";
 import axios from "axios";
 import { AUTH, API_URL, LoginDto } from "../../types";
@@ -14,7 +14,6 @@ function signin() {
 const dispatch = useAppDispatch();
 
 const { loading } = useAppSelector((state) => state.user);
-  const navigate = useNavigate();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -39,7 +38,7 @@ const { loading } = useAppSelector((state) => state.user);
       }
       localStorage.setItem("token", data);
       const now = new Date().getTime();
-      localStorage.setItem("expiredTime", now.toString());
+      localStorage.setItem("setupTime", now.toString());
       dispatch(signInSuccess(data));
       toast.success("Đăng nhập thành công!");
       window.location.href =

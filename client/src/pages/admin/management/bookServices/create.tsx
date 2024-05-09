@@ -69,6 +69,7 @@ const create = () => {
               isPrivate: false,
               category: "Cổ tích - Thần thoại",
             });
+            setImagePercent(0);
         }
       })
       .catch(err => {

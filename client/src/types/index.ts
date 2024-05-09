@@ -8,7 +8,11 @@ export const CATEGORY = "Category";
 export const BOOK = "Book";
 export const AUTH = "Auth";
 export const USER = "User";
-export const COMMENT = "Comments"
+export const COMMENT = "Comments";
+export const FBOOK = "FavouriteBook";
+export const WBOOK = "WatchedBook";
+export const FEEDBACK = "Feedback";
+export const BLOG = "Blogs";
 
 export interface ColumnProps<T extends Object> {
   Header: string;
@@ -32,8 +36,10 @@ export type BookDto = {
   author: string;
   language: string;
   imageUrl: string;
+  numOfDownloads: number;
+  numOfViews: number;
   isPrivate: boolean;
-  categoryId: number
+  categoryId: number;
   category: string;
 };
 export type BookToAddDto = {
@@ -56,6 +62,15 @@ export type BookToEditDto = {
   imageUrl: string;
   isPrivate: boolean;
   category: string;
+};
+
+export type WatchedBookDto = {
+  id: number;
+  code: string;
+  title: string;
+  author: string;
+  imageUrl: string;
+  createdAt: string;
 };
 
 export type RegisterDto = {
@@ -109,4 +124,30 @@ export type CommentDto = {
   username: string;
   imageUrl: string;
   title: string;
+}
+
+export type BlogDto = {
+  id: number;
+  title: string;
+  description: string;
+  time: string;
+  fileUrl: string;
+}
+
+export type BlogInfoDto = {
+  id: number;
+  title: string;
+  time: string;
+  content: string;
+};
+
+export type FeedbackDto = {
+  id: number;
+  username: string;
+  avatar: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  filename: string;
+  isActive: boolean; 
 }

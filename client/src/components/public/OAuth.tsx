@@ -1,5 +1,4 @@
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "@firebase/auth";
-import { useNavigate } from "react-router-dom";
 import { app } from "../../firebase";
 import axios from "axios";
 import { API_URL, AUTH, GoogleDto } from "../../types";
@@ -8,7 +7,6 @@ import { signInFailure, signInStart, signInSuccess } from "../../store/features/
 import toast from "react-hot-toast";
 
 export default function OAuth() {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   function generateRandomString(length: number) {
     const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -53,10 +51,11 @@ export default function OAuth() {
       }
       localStorage.setItem("token", data);
       const now = new Date().getTime();
-      localStorage.setItem("expiredTime", now.toString());
+      localStorage.setItem("setupTime", now.toString());
       dispatch(signInSuccess(data));
       toast.success("Đăng nhập thành công!")
-      navigate("/");
+      window.location.href =
+        localStorage.getItem("previousUrl") || "http://localhost:3000/admin";
     } catch (err) {
       dispatch(signInFailure());
       console.log("Could not login with Google " + err);

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { searchSetResults, searchSetValue, searchStart } from "../../store/features/searchSlice";
 import { useNavigate } from "react-router-dom";
+import { removeAccents } from "../../utils/appUtils";
 
 const SearchBar = () => {
   const navigate = useNavigate();
@@ -33,9 +34,15 @@ const SearchBar = () => {
       return (
         value &&
         book &&
-        (book.author.toLowerCase().includes(value.toLowerCase()) ||
-          book.title.toLowerCase().includes(value.toLowerCase()) ||
-          book.category.toLowerCase().includes(value.toLowerCase()))
+        (removeAccents(book.author.toLowerCase()).includes(
+          removeAccents(value.toLowerCase())
+        ) ||
+          removeAccents(book.title)
+            .toLowerCase()
+            .includes(removeAccents(value.toLowerCase())) ||
+          removeAccents(book.category)
+            .toLowerCase()
+            .includes(removeAccents(value.toLowerCase())))
       );
     });
     dispatch(searchSetResults(results));

@@ -11,7 +11,7 @@ const publicRoute = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
   useEffect(() => {
-    var setupTime = localStorage.getItem("expiredTime");
+    var setupTime = localStorage.getItem("setupTime");
     var now = new Date().getTime();
     if (setupTime) {
       if (now - parseInt(setupTime) > 24 * 60 * 60 * 1000) {

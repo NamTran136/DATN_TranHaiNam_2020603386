@@ -12,11 +12,12 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOut, updateUserFailure, updateUserStart, updateUserSuccess } from "../../store/features/userSlice";
 import axios from "axios";
 import toast from "react-hot-toast";
+import SubNav from "../../components/public/SubNav";
 
 export default function profile() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { user, loading, error, token } = useAppSelector((state) => state.user);
+  const { user, loading, token } = useAppSelector((state) => state.user);
   const refUrl = useRef<HTMLInputElement>(null);
   const initialFormValues: UserEditDto = {
     email: user.email,
@@ -142,7 +143,7 @@ export default function profile() {
   };
   return (
     <div className="profile">
-      <h1>Thiết lập tài khoản</h1>
+      <SubNav />
       <form onSubmit={handleSubmit} className="form">
         <input
           type="file"

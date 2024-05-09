@@ -48,9 +48,21 @@ var iframe = document.getElementById("fullscreen-iframe");
   
   return (
     <div className="reading-book-wrapper">
-      <button className="default-button mb-5" onClick={() => toggleFullscreen()}>
-        Chế độ toàn màn hình
-      </button>
+      <div style={{display: "flex", alignItems: "center", justifyContent: "space-around"}}>
+        <button
+          className="private-button mb-5"
+          onClick={() => toggleFullscreen()}
+        >
+          Chế độ toàn màn hình
+        </button>
+        <button
+          className="default-button mb-5"
+          onClick={() => window.location.href =
+        localStorage.getItem("previousUrl") || "http://localhost:3000/admin"}
+        >
+          Quay lại
+        </button>
+      </div>
       {isLoading && <span>Loading...</span>}
       {error && <span className="red">Có lỗi xảy ra trong quá trình tải</span>}
       {book && (

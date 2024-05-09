@@ -1,0 +1,69 @@
+.widget-container {
+    .dashboard-category-box {
+        >h2 {
+            margin-bottom: 0.5rem;
+        }
+        .feedback-item-list {
+            
+            >.feedback-item-container{
+                @include flex();
+                margin-bottom: 2rem;
+                &:hover .feedback-item {
+                    border: 2px solid rgb(255, 165, 0);
+                }
+                >.feedback-item {
+                    flex: 1;
+                    border: 2px solid rgb(224, 224, 224);
+                    padding: 1.5rem 2rem;
+                    cursor: pointer;
+                    
+                    >.user-wrapper {
+                        display: flex;
+                        >img {
+                            @include square(3rem);
+                            border-radius: 50%;
+                        }
+                        >.user-wrapper {
+                            margin-left: 2rem;
+                        }
+                    }
+                    >.feedback-content {
+                        text-align: justify;
+                        margin-top: 1.5rem;
+                        >h4 {
+                            margin-top: 0.5rem;
+                            color: #555;
+                        }
+                        >h4.is-active {
+                            color: rgb(22, 82, 240);
+                        }
+                    }
+                }
+                >.action-wrapper {
+                    width: 12rem;
+                    padding: 1.5rem;
+                    >.btn-feedback {
+                        cursor: pointer;
+                        padding: 0.5rem 1rem;
+                    }
+                    >.btn-feedback.btn-active {
+                        background-color: rgb(250, 100, 0);
+                        border: 1px solid transparent;
+                        border-radius: .25rem;
+                        color: rgb(255, 255, 255);
+                        align-items: center;
+                        border-radius: 25rem;
+                    }
+                    >.active-feedback {
+                        @include flex(row, flex-start, center, 0);
+                        margin-top: 1.5rem;
+                        >div{
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+            
+        }
+    }
+}

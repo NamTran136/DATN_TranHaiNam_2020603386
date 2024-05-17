@@ -18,11 +18,13 @@ namespace API.Controllers
         private readonly IUserService _userService;
         private readonly IFeedbackService _feedbackService;
         private readonly DataDbContext _db;
-        public FeedbackController(IUserService userService, IFeedbackService feedbackService, DataDbContext db)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public FeedbackController(IUserService userService, IFeedbackService feedbackService, DataDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _userService = userService;
             _feedbackService = feedbackService;
             _db = db;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet, Authorize(Roles = "Admin")]
@@ -71,15 +73,14 @@ namespace API.Controllers
             {
                 var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
                 filename = DateTime.Now.Ticks.ToString() + extension;
-
-                var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Files");
+                var filepath = Path.Combine(_webHostEnvironment.WebRootPath, "Upload\\Feedbacks");
 
                 if (!Directory.Exists(filepath))
                 {
                     Directory.CreateDirectory(filepath);
                 }
 
-                var exactpath = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Files", filename);
+                var exactpath = Path.Combine(_webHostEnvironment.WebRootPath, "Upload\\Feedbacks", filename);
 
                 using (var stream = new FileStream(exactpath, FileMode.Create))
                 {
@@ -99,7 +100,7 @@ namespace API.Controllers
         {
             var feedback = _db.Feedbacks.FirstOrDefault(f => f.Id == id);
             if (feedback == null) return NotFound();
-            var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Files", feedback.Filename);
+            var filepath = Path.Combine(_webHostEnvironment.WebRootPath, "Upload\\Feedbacks", feedback.Filename);
 
             var provider = new FileExtensionContentTypeProvider();
             if (!provider.TryGetContentType(filepath, out var contentType))

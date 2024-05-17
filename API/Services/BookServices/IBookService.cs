@@ -6,8 +6,6 @@ namespace API.Services.BookServices
     public interface IBookService
     {
         bool CodeBookExists(string code);
-        bool Add(BookAddEditDto book);
-        bool Update(BookAddEditDto book);
         List<BookDto> GetAll();
         BookDto GetById(int id);
         bool Delete(int id);
@@ -27,5 +25,6 @@ namespace API.Services.BookServices
         int AddWatchedBook(int bookId, string email);
         List<int> GetWatchedBookId(string email);
         WatchedBookDto GetWatchedBook(int bookId);
+        bool DeleteOldFilename(string filename);
     }
 }

@@ -1,14 +1,17 @@
 ﻿using API.Data;
 using API.DTOs;
+using Microsoft.AspNetCore.Hosting;
 
 namespace API.Services.FeedbackServices
 {
     public class FeedbackService : IFeedbackService
     {
         private readonly DataDbContext _db;
-        public FeedbackService(DataDbContext db)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public FeedbackService(DataDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public List<FeedbackDto> GetAll()
@@ -53,7 +56,7 @@ namespace API.Services.FeedbackServices
         {
             var feedback = _db.Feedbacks.FirstOrDefault(f => f.Id == id);
             if (feedback == null) return false;
-            var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Files", feedback.Filename);
+            var filepath = Path.Combine(_webHostEnvironment.WebRootPath, "Upload\\Feedbacks", feedback.Filename);
             if (File.Exists(filepath))
             {
                 File.SetAttributes(filepath, FileAttributes.Normal);

@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.DTOs;
 using API.Entities;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using static System.Reflection.Metadata.BlobBuilder;
 
@@ -9,28 +10,11 @@ namespace API.Services.BookServices
     public class BookService : IBookService
     {
         private readonly DataDbContext _db;
-        public BookService(DataDbContext db)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public BookService(DataDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
-        }
-        public bool Add(BookAddEditDto book)
-        {
-            var fetchedCategory = GetCategoryByName(book.Category);
-            var bookToAdd = new Book
-            {
-                Title = book.Title,
-                Code = book.Code,
-                Description = book.Description,
-                Author = book.Author,
-                Language = book.Language,
-                IsPrivate = book.IsPrivate,
-                ImageUrl = book.ImageUrl,
-                CategoryId = fetchedCategory.Id,
-                Category = fetchedCategory
-            };
-            _db.Books.Add(bookToAdd);
-            _db.SaveChanges();
-            return true;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public bool CodeBookExists(string code)
@@ -45,6 +29,7 @@ namespace API.Services.BookServices
             {
                 return false;
             }
+            DeleteOldFilename(fetchedBook.Code);
             _db.Books.Remove(fetchedBook);
             _db.SaveChanges();
             return true;
@@ -90,7 +75,7 @@ namespace API.Services.BookServices
                 {
                     Id = book.Id,
                     Title = book.Title,
-                    Code = book.Code,
+                    Code = GetImageUrl(book.Code),
                     Description = book.Description,
                     Author = book.Author,
                     Language = book.Language,
@@ -117,7 +102,7 @@ namespace API.Services.BookServices
                 {
                     Id = book.Id,
                     Title = book.Title,
-                    Code = book.Code,
+                    Code = GetImageUrl(book.Code),
                     Description = book.Description,
                     Author = book.Author,
                     Language = book.Language,
@@ -137,40 +122,37 @@ namespace API.Services.BookServices
         {
             var book = _db.Books
                 .Where(x => x.Id == id)
-                .Select(x => new BookDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Code = x.Code,
-                    Description = x.Description,
-                    Author = x.Author,
-                    Language = x.Language,
-                    CategoryId = x.CategoryId,
-                    ImageUrl = x.ImageUrl,
-                    NumOfDownloads = x.NumOfDownloads,
-                    NumOfViews = x.NumOfViews,
-                    IsPrivate = x.IsPrivate,
-                    Category = x.Category.Name
-                })
                 .FirstOrDefault();
             if (book == null) return null;
-            return book;
+            var toReturn = new BookDto
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Code = GetImageUrl(book.Code),
+                Description = book.Description,
+                Author = book.Author,
+                Language = book.Language,
+                CategoryId = book.CategoryId,
+                ImageUrl = book.ImageUrl,
+                NumOfDownloads = book.NumOfDownloads,
+                NumOfViews = book.NumOfViews,
+                IsPrivate = book.IsPrivate,
+                Category = _db.Categories.Find(book.CategoryId).Name
+            };
+            return toReturn;
         }
-
-        public bool Update(BookAddEditDto book)
+        public bool DeleteOldFilename(string filename)
         {
-            var fetchedBook = _db.Books.Find(book.Id);
-            var fetchedCategory = GetCategoryByName(book.Category);
-            fetchedBook.Title = book.Title;
-            fetchedBook.Code = book.Code;
-            fetchedBook.Description = book.Description;
-            fetchedBook.Author = book.Author;
-            fetchedBook.Language = book.Language;
-            fetchedBook.IsPrivate = book.IsPrivate;
-            fetchedBook.ImageUrl = book.ImageUrl;
-            fetchedBook.CategoryId = fetchedCategory.Id;
-            fetchedBook.Category = fetchedCategory;
-            _db.SaveChanges();
+            var filepath = Path.Combine(_webHostEnvironment.WebRootPath, "Upload\\Books", filename);
+            FileInfo filetodelete = new FileInfo(filepath);
+            try
+            {
+                filetodelete.Delete();
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             return true;
         }
 
@@ -318,6 +300,27 @@ namespace API.Services.BookServices
                .FirstOrDefault();
             if (book == null) return null;
             return book;
+        }
+        private string GetImageUrl(string imageName)
+        {
+            // Get the physical path to the wwwroot folder
+            string webRootPath = _webHostEnvironment.WebRootPath;
+
+            // Combine the path with the image file name
+            string imagePath = Path.Combine(webRootPath, "Upload\\Books", imageName); // Assuming the images are in the "images" folder
+            string hostUrl = "https://localhost:7009/";
+            // Check if the image file exists
+            if (File.Exists(imagePath))
+            {
+                imagePath = hostUrl + "Upload/Books/" + imageName;
+                return imagePath;
+            }
+            else
+            {
+                // Handle the case where the image file does not exist
+                imagePath = hostUrl + "Common/NoImage.png";
+                return imagePath;
+            }
         }
     }
 }

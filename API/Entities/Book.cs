@@ -13,10 +13,14 @@ namespace API.Entities
         public string Author { get; set; }
         public string Language { get; set; }
         public string ImageUrl {  get; set; }
+        public int NumOfDownloads { get; set; } = 0;
+        public int NumOfViews { get; set; } = 0;
         public bool IsPrivate {  get; set; } = false;
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
         public ICollection<Comment> Comments { get; set; }
+        public ICollection<FavouriteBook> FavouriteBooks { get; set; }
+        public ICollection<WatchedBook> WatchedBooks { get; set; }
     }
 }

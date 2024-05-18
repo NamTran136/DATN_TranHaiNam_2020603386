@@ -12,6 +12,8 @@ namespace API.DTOs
         public string Author { get; set; }
         public string Language { get; set; }
         public string ImageUrl { get; set; }
+        public int NumOfDownloads { get; set; } 
+        public int NumOfViews { get; set; } 
         public int CategoryId {  get; set; }
         public bool IsPrivate { get; set; }
         public string Category { get; set; }

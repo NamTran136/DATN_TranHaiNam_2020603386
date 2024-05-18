@@ -1,5 +1,6 @@
 ﻿using API.DTOs;
 using API.Services.CommentServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,7 +17,7 @@ namespace API.Controllers
             _commentService = commentService;
         }
         // GET: api/<CommentsController>
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public ActionResult<List<CommentDto>> GetAll()
         {
             var comments = _commentService.GetAll();
@@ -50,7 +51,7 @@ namespace API.Controllers
         }
 
         // POST api/<CommentsController>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "User")]
         public IActionResult Post(CommentAddOrEditDto comment)
         {
             if(_commentService.Add(comment) == 1)
@@ -61,7 +62,7 @@ namespace API.Controllers
         }
 
         // DELETE api/<CommentsController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             if(!_commentService.Delete(id))

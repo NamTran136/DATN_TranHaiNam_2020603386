@@ -3,9 +3,9 @@ import Header from "./public/Header";
 import Introduction from "./public/Introduction";
 import Footer from "./public/Footer";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import Search from "./public/Search";
 import { signInSuccess, signOut } from "../store/features/userSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import PublicSidebar from "./public/PublicSidebar";
 
 const publicRoute = () => {
   const dispatch = useAppDispatch();
@@ -24,14 +24,18 @@ const publicRoute = () => {
       }
     }
   }, []);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  window.addEventListener("resize", ()=>{
+    if(window.innerWidth > 960) setIsOpen(false);
+  });
   return (
     <>
-      <Header />
-      <Search />
+      <Header isOpen={isOpen} setIsOpen={setIsOpen} />
       <Introduction />
-      <div className="public-container">
+      <div className="public-container" onClick={() => setIsOpen(false)}>
         {user.role !== "Admin" ? <Outlet /> : <Navigate to="/admin" />}
       </div>
+      <PublicSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       <Footer />
     </>
   );

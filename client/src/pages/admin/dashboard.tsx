@@ -9,12 +9,15 @@ import { API_URL, CategoryDto, COMMON } from "../../types";
 import axios from "axios";
 import { useAppSelector } from "../../store/store";
 import { BiSolidCategory } from "react-icons/bi";
+import AdminSidebarMobile from "../../components/admin/AdminSidebarMobile";
+import { IoMdMenu } from "react-icons/io";
 
 
 
 const dashboard = () => {
   const { token } = useAppSelector((state) => state.user);
   const [isFold, setIsFold] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [topCategories, setTopCategories] = useState<CategoryDto[]>([] as CategoryDto[]);
   const [totalBook, setTotalBook] = useState<number>(0);
   const [totalCate, setTotalCate] = useState<number>(0);
@@ -118,12 +121,16 @@ const dashboard = () => {
     <div
       className="admin-container"
       style={{
-        gridTemplateColumns: isFold ? "1fr 15fr" : "1fr 4fr",
         gap: isFold ? "0.5rem" : "2rem",
       }}
     >
       <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
-      <main className="dashboard">
+      <AdminSidebarMobile isOpen={isOpen} setIsOpen={setIsOpen} />
+      <div className="open-menu-icon" >
+        <IoMdMenu size={24} onClick={() => setIsOpen(!isOpen)} />
+      </div>
+      
+      <main className="dashboard" onClick={() => setIsOpen(false)}>
         <div className="bar">
           <BsSearch />
           <input type="text" placeholder="Search for data, users, docs" />
@@ -133,7 +140,10 @@ const dashboard = () => {
             alt="User"
           />
         </div>
-        <div className="widget-container">
+        <div
+          className="widget-container"
+          style={{ marginLeft: isFold ? "2rem" : "" }}
+        >
           <WidgetItem
             percent={getRandomNumber(-5.0, 15.0)}
             value={totalBook}
@@ -164,7 +174,13 @@ const dashboard = () => {
           />
         </div>
         <section className="graph-container">
-          <div className="revenue-chart">
+          <div
+            className="revenue-chart"
+            style={{
+              width: isFold ? "" : "762px",
+              marginLeft: isFold ? "2rem" : "",
+            }}
+          >
             <h2>Download & View</h2>
             {/* Grapph here */}
             <BarChart

@@ -14,6 +14,8 @@ import { useAppSelector } from "../../store/store";
 import Pagination from "../../components/public/Pagination";
 import { FaRegBell } from "react-icons/fa";
 import { BsSearch } from "react-icons/bs";
+import AdminSidebarMobile from "../../components/admin/AdminSidebarMobile";
+import { IoMdMenu } from "react-icons/io";
 
 type SortFunctionProps = {
   tableData: CommentDto[];
@@ -73,6 +75,7 @@ const columns: ColumnProps<CommentDto>[] = [
 
 const Comments = () => {
   const [isFold, setIsFold] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const { token } = useAppSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<CommentDto[]>([]);
@@ -160,6 +163,10 @@ const [totalCount, setTotalCount] = useState(0);
       }}
     >
       <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
+      <AdminSidebarMobile isOpen={isOpen} setIsOpen={setIsOpen} />
+      <div className="open-menu-icon">
+        <IoMdMenu size={24} onClick={() => setIsOpen(!isOpen)} />
+      </div>
       <main className="dashboard">
         <div className="bar">
           <BsSearch />

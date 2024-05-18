@@ -14,6 +14,7 @@
 @import "blogTable";
 @import "createBlog";
 @import "feedbackAdmin";
+@import "mediaQuery";
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -83,7 +84,6 @@ button {
   }
 }
 
-
 .text-white {
   color: rgb(255, 255, 255) !important;
 }
@@ -94,8 +94,10 @@ button {
 
 .shadow {
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color),
+    0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .mt-2 {
@@ -104,7 +106,7 @@ button {
 .mb-2 {
   margin-bottom: 0.5rem;
 }
-.mt-32{
+.mt-32 {
   margin-top: 2rem;
 }
 .mt-5 {
@@ -114,25 +116,29 @@ button {
   margin-bottom: 1.25rem;
 }
 .mb-3 {
-  margin-bottom: 0.75rem/* 12px */;
+  margin-bottom: 0.75rem /* 12px */;
 }
 .none {
-  display: none!important;
+  display: none !important;
 }
 .p-6 {
-  padding: 1.5rem/* 24px */;
+  padding: 1.5rem /* 24px */;
 }
 // Default button
-.default-button, .private-button {
+.default-button,
+.private-button {
   align-items: center;
-  
+
   border: 0;
   border-radius: 100px;
   box-sizing: border-box;
-  
+
   cursor: pointer;
   display: inline-flex;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto,
+    "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell,
+    "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Lucida Grande", Helvetica, Arial, sans-serif;
   font-size: 16px;
   font-weight: 600;
   justify-content: center;
@@ -146,48 +152,50 @@ button {
   padding-right: 20px;
   text-align: center;
   touch-action: manipulation;
-  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+    box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+    color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
   user-select: none;
   -webkit-user-select: none;
   vertical-align: middle;
 }
 
-.private-button{
-  background-color: #0A66C2;
+.private-button {
+  background-color: #0a66c2;
   color: #ffffff;
 }
 
-.default-button{
+.default-button {
   background-color: rgb(204, 204, 204);
   color: #333;
 }
 
 .private-button:hover,
-.private-button:focus { 
-  background-color: #16437E;
+.private-button:focus {
+  background-color: #16437e;
   color: #ffffff;
 }
 
 .default-button:hover,
-.default-button:focus { 
+.default-button:focus {
   opacity: 0.8;
 }
 
 .private-button:active {
   background: #09223b;
-  color: rgb(255, 255, 255, .7);
+  color: rgb(255, 255, 255, 0.7);
 }
 
 .private-button:disabled,
-.default-button:disabled { 
+.default-button:disabled {
   cursor: not-allowed;
-  background: rgba(0, 0, 0, .08);
-  color: rgba(0, 0, 0, .3);
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.3);
 }
 
 .btn-disabled {
-  opacity: 0.6!important;
-  cursor: default!important;
+  opacity: 0.6 !important;
+  cursor: default !important;
 }
 
 // Public
@@ -311,12 +319,13 @@ button {
 
 // admin components
 .admin-container {
-  @include grid(1fr 4fr, 2rem);
+  @include flex(row, center, unset, 0);
   height: 100vh;
   background-color: rgb(247, 247, 247);
+  position: relative;
   > aside {
     position: relative;
-    width: 100%;
+    width: 20%;
     background-color: rgb(255, 255, 255);
     padding: 1rem;
     z-index: 10;
@@ -325,7 +334,7 @@ button {
     &::-webkit-scrollbar {
       display: none;
     }
-    >.menu-icon {
+    > .menu-icon {
       cursor: pointer;
     }
     > .logo {
@@ -347,10 +356,12 @@ button {
         list-style: none;
         > li {
           padding: 0.5rem 1rem;
+          margin: 0;
           border-radius: 10px;
           a {
             color: rgba(0, 0, 0, 0.825);
             @include flex(row, unset);
+            margin: 0;
           }
           button {
             background-color: rgb(47, 122, 252);
@@ -363,6 +374,71 @@ button {
         }
       }
     }
+  }
+  > .admin-sidebar-mobile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 350px;
+    background-color: rgb(255, 255, 255);
+    padding: 1rem;
+    z-index: 10;
+    overflow-y: auto;
+    color: #000;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    > .menu-icon {
+      cursor: pointer;
+    }
+    > .logo {
+      width: 4rem;
+      margin: 0 auto;
+      > img {
+        width: 100%;
+      }
+    }
+    > .wrapper {
+      margin: 2rem 1rem;
+      > h5 {
+        @include heading(2px);
+        opacity: 0.8;
+        margin: 1rem 0;
+      }
+      > ul {
+        @include flex(column, unset, unset, 0.5rem);
+        list-style: none;
+        > li {
+          padding: 0.5rem 1rem;
+          margin: 0;
+          border-radius: 10px;
+          a {
+            color: rgba(0, 0, 0, 0.825);
+            @include flex(row, unset);
+            margin: 0;
+          }
+          button {
+            background-color: rgb(47, 122, 252);
+            color: rgb(255, 255, 255);
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+  > .open-menu-icon {
+    position: fixed;
+    top: 5rem;
+    left: 5%;
+    z-index: 10;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: none;
   }
 }
 
@@ -442,7 +518,7 @@ button {
       }
     }
     td.btn-wrapper {
-      max-width: 20rem
+      max-width: 20rem;
     }
   }
 }
@@ -468,56 +544,103 @@ button {
 .preview-section {
   text-align: justify;
   padding: 2rem;
-  >h1 {
+  > h1 {
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 0.625rem;
   }
-  >h1 {
+  > h1 {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 0.625rem;
   }
-  >h2 {
+  > h2 {
     font-size: 18.72px;
     font-weight: bold;
     margin-bottom: 0.625rem;
   }
-  >h3 {
+  > h3 {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 0.625rem;
   }
-  >h4 {
+  > h4 {
     font-size: 13.28px;
     font-weight: bold;
     margin-bottom: 0.625rem;
   }
-  >h6 {
+  > h6 {
     font-size: 10px;
     font-weight: bold;
     margin-bottom: 0.625rem;
   }
-  >p {
+  > p {
     font-size: 16px;
     font-weight: bold;
-    margin-bottom: 0.375rem/* 6px */;
+    margin-bottom: 0.375rem /* 6px */;
   }
-  >ul {
+  > ul {
     list-style-type: disc;
     margin-bottom: 0.5rem;
-    >li {
-      margin-bottom: 0.5rem/* 8px */;;
+    > li {
+      margin-bottom: 0.5rem /* 8px */;
     }
   }
-  >ol {
+  > ol {
     list-style-type: decimal;
-    >li {
-      margin-bottom: 2.5rem/* 40px */;
+    > li {
+      margin-bottom: 2.5rem /* 40px */;
     }
   }
-  >img {
-    border-radius: 0.5rem/* 8px */;
+  > img {
+    border-radius: 0.5rem /* 8px */;
   }
-
+}
+.menu-mobile-wrapper {
+  position: absolute;
+  top: 8rem;
+  right: 0;
+  z-index: 10;
+  background-color: #fff;
+  @include flex(column, flex-start, center, 0);
+  > .auth-container {
+    @include flex(row, center, center, 0);
+    margin-bottom: 1rem;
+    > a {
+      > .btn-signin {
+        background-color: rgb(47, 122, 252);
+        color: rgb(255, 255, 255);
+        margin-top: 0.5rem /* 8px */;
+        margin-bottom: 0.5rem;
+        padding: 0.5rem 1.25rem;
+        border-radius: 9999px;
+        border: none;
+        cursor: pointer;
+        &:hover {
+          background-color: rgb(135, 172, 236);
+        }
+      }
+      >.avatar {
+        height: 2rem/* 28px */;
+        width: 2rem/* 28px */;
+        border-radius: 9999px;
+        object-fit: cover;
+        padding: 0.1rem;
+        border: 1px solid rgb(209, 213, 219);
+      }
+    }
+  }
+  .public-sidebar {
+    list-style: none;
+    width: 100%;
+    li {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      > ul {
+        list-style: none;
+        padding: 0;
+        margin-bottom: -1rem;
+      }
+    }
+  }
 }

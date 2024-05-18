@@ -1,6 +1,6 @@
 .dashboard {
   overflow-y: auto;
-
+  width: 100%;
   .bar {
     height: 4rem;
     @include flex(row, unset);
@@ -94,17 +94,16 @@
     }
   }
   .graph-container {
-    @include flex(row, unset, unset, 2rem);
-    padding: 0 2rem 2rem 0;
+    @include flex(row, space-between, stretch, 2rem);
+    padding: 2rem 2rem 2rem 0;
     > div {
       background-color: white;
       border-radius: 10px;
     }
 
     .revenue-chart {
-      width: 100%;
-      padding: 1rem 3rem;
-
+      padding: 1rem;
+      flex: 1;
       > h2 {
         @include heading;
         margin: 1rem 0 2rem 0.25rem;
@@ -113,10 +112,8 @@
     }
 
     .dashboard-categories {
-      width: 100%;
-      max-width: 16rem;
+      min-width: 11.5rem;
       @include flex(column, center, unset, 0);
-      padding-bottom: 2rem;
       > h2 {
         @include heading;
         margin: 1.5rem 0 2rem 0;

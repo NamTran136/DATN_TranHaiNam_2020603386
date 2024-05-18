@@ -15,6 +15,8 @@ import { FaCircleArrowUp } from "react-icons/fa6";
 import Pagination from "../../components/public/Pagination";
 import { BsSearch } from "react-icons/bs";
 import { useAppSelector } from "../../store/store";
+import AdminSidebarMobile from "../../components/admin/AdminSidebarMobile";
+import { IoMdMenu } from "react-icons/io";
 
 type SortFunctionProps = {
   tableData: BookDto[];
@@ -70,6 +72,7 @@ const columns: ColumnProps<BookDto>[] = [
 
 const BookService = () => {
   const { token } = useAppSelector((state) => state.user);
+  const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isFold, setIsFold] = useState(false);
   const [data, setData] = useState<BookDto[]>([]);
@@ -177,6 +180,10 @@ const BookService = () => {
       }}
     >
       <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
+      <AdminSidebarMobile isOpen={isOpen} setIsOpen={setIsOpen} />
+      <div className="open-menu-icon">
+        <IoMdMenu size={24} onClick={() => setIsOpen(!isOpen)} />
+      </div>
       <main className="dashboard">
         <div className="bar">
           <form onSubmit={handleSubmit}>

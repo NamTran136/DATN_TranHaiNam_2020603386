@@ -7,9 +7,12 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Pagination from "../../components/public/Pagination";
 import { BsSearch } from "react-icons/bs";
+import AdminSidebarMobile from "../../components/admin/AdminSidebarMobile";
+import { IoMdMenu } from "react-icons/io";
 
 const Blogs = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [isFold, setIsFold] = useState(false);
   const [data, setData] = useState<BlogDto[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -76,6 +79,10 @@ const Blogs = () => {
       }}
     >
       <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
+      <AdminSidebarMobile isOpen={isOpen} setIsOpen={setIsOpen} />
+      <div className="open-menu-icon">
+        <IoMdMenu size={24} onClick={() => setIsOpen(!isOpen)} />
+      </div>
       <main className="dashboard">
         <div className="bar">
           <BsSearch />
@@ -87,7 +94,11 @@ const Blogs = () => {
           />
         </div>
         <div className="table-container">
-          <Link to="/admin/blog/new" className="create-category-btn" style={{top: "4.2rem"}}>
+          <Link
+            to="/admin/blog/new"
+            className="create-category-btn"
+            style={{ top: "4.2rem" }}
+          >
             <FaPlus />
           </Link>
 

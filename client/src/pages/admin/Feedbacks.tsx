@@ -2,7 +2,7 @@ import { BsSearch } from "react-icons/bs";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import { FaRegBell } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { IoMdDownload } from "react-icons/io";
+import { IoMdDownload, IoMdMenu } from "react-icons/io";
 import { IoTrashBinSharp } from "react-icons/io5";
 import axios from "axios";
 import { API_URL, FEEDBACK, FeedbackDto } from "../../types";
@@ -10,10 +10,11 @@ import Pagination from "../../components/public/Pagination";
 import { useAppSelector } from "../../store/store";
 import toast from "react-hot-toast";
 import { TimeString } from "../../utils/appUtils";
+import AdminSidebarMobile from "../../components/admin/AdminSidebarMobile";
 
 const Confirmation = () => {
   const { token } = useAppSelector((state) => state.user);
-
+  const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isFold, setIsFold] = useState(false);
   const [data, setData] = useState<FeedbackDto[]>([]);
@@ -149,6 +150,10 @@ const Confirmation = () => {
       }}
     >
       <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
+      <AdminSidebarMobile isOpen={isOpen} setIsOpen={setIsOpen} />
+      <div className="open-menu-icon">
+        <IoMdMenu size={24} onClick={() => setIsOpen(!isOpen)} />
+      </div>
       <main className="dashboard">
         <div className="bar">
           <BsSearch />

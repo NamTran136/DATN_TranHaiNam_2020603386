@@ -103,3 +103,37 @@
     }
   }
 }
+
+.header-mobile{
+  @include flex(row, space-around, center, 0);
+  margin: 1rem 0!important;
+  padding: 0 2rem!important;
+  .logo {
+    flex: 1;
+    .logo-container {
+      @include flex(row, center, center, 0);
+      .logo-image {
+        height: 2.5rem;
+        width: 3rem;
+        border-radius: 100%;
+        object-fit: cover;
+      }
+      .logo-text {
+        font-family: "Archivo", sans-serif;
+      }
+    }
+  }
+  > .menu-icon{
+    flex: 1;
+    @include flex(row, center, center, 0);
+    cursor: pointer;
+  }
+  >.search-bar-container{
+    flex: 2;
+    padding: 0 2rem;
+    min-width: 0;
+    >.input-wrapper {
+      width: 100%;
+    }
+  }
+}

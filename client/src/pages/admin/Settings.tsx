@@ -2,10 +2,13 @@ import { BsSearch } from "react-icons/bs";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import { FaRegBell } from "react-icons/fa";
 import { useState } from "react";
+import AdminSidebarMobile from "../../components/admin/AdminSidebarMobile";
+import { IoMdMenu } from "react-icons/io";
 
 
 const Settings = () => {
   const [isFold, setIsFold] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div
       className="admin-container"
@@ -15,6 +18,10 @@ const Settings = () => {
       }}
     >
       <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
+      <AdminSidebarMobile isOpen={isOpen} setIsOpen={setIsOpen} />
+      <div className="open-menu-icon">
+        <IoMdMenu size={24} onClick={() => setIsOpen(!isOpen)} />
+      </div>
       <main className="dashboard">
         <div className="bar">
           <BsSearch />

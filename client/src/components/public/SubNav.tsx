@@ -3,7 +3,7 @@ import { Link, Location, useLocation } from "react-router-dom";
 const SubNav = () => {
   const location = useLocation();
   return (
-      <ul>
+      <ul className="subnav">
         <Li url="/profile" text="Thiết lập tài khoản" location={location} />
         <li>/</li>
         <Li url="/feedback" text="Phản hồi - Đóng góp" location={location} />

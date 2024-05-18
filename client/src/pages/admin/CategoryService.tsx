@@ -7,6 +7,8 @@ import { FaPlus, FaRegBell } from "react-icons/fa";
 import { FaCircleArrowUp } from "react-icons/fa6";
 import Pagination from "../../components/public/Pagination";
 import { BsSearch } from "react-icons/bs";
+import AdminSidebarMobile from "../../components/admin/AdminSidebarMobile";
+import { IoMdMenu } from "react-icons/io";
 
 type SortFunctionProps = {
   tableData: CategoryDto[];
@@ -51,6 +53,7 @@ const columns: ColumnProps<CategoryDto>[] = [
 
 const CategoryService = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [isFold, setIsFold] = useState(false);
   const [data, setData] = useState<CategoryDto[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -131,6 +134,10 @@ const CategoryService = () => {
       }}
     >
       <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
+      <AdminSidebarMobile isOpen={isOpen} setIsOpen={setIsOpen} />
+      <div className="open-menu-icon">
+        <IoMdMenu size={24} onClick={() => setIsOpen(!isOpen)} />
+      </div>
       <main className="dashboard">
         <div className="bar">
           <BsSearch />

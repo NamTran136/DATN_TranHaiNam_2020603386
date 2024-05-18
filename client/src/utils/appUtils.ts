@@ -79,3 +79,11 @@ export function TimeString() {
   const dateString = date.toLocaleString(); 
   return dateString;
 }
+
+export const getRandomNumber = (min: number, max: number): number => {
+  return parseFloat((Math.random() * (max - min) + min).toFixed(2));
+};
+
+export function hasImageExtension(fileName: string): boolean {
+  return fileName.endsWith(".jpg") || fileName.endsWith(".png");
+}

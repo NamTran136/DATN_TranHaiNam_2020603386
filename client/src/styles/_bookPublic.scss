@@ -1,7 +1,7 @@
 .reading-book-wrapper {
   max-width: 60rem;
   margin: auto;
-  > iframe {
+  > iframe, embed {
     width: 90%;
     height: 90vh;
   }

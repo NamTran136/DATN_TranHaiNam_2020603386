@@ -3,6 +3,7 @@ import { API_URL, BOOK, BookDto} from "../../types";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
+
 const readingBook = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [book, setBook] = useState<BookDto>();
@@ -48,7 +49,14 @@ var iframe = document.getElementById("fullscreen-iframe");
   
   return (
     <div className="reading-book-wrapper">
-      <div style={{display: "flex", alignItems: "center", justifyContent: "space-around"}}>
+      <h2 style={{color: "blue", marginBottom: "2rem"}}>{book?.title+""}</h2>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-around",
+        }}
+      >
         <button
           className="private-button mb-5"
           onClick={() => toggleFullscreen()}
@@ -57,8 +65,11 @@ var iframe = document.getElementById("fullscreen-iframe");
         </button>
         <button
           className="default-button mb-5"
-          onClick={() => window.location.href =
-        localStorage.getItem("previousUrl") || "http://localhost:3000/admin"}
+          onClick={() =>
+            (window.location.href =
+              localStorage.getItem("previousUrl") ||
+              "http://localhost:3000/admin")
+          }
         >
           Quay lại
         </button>
@@ -66,11 +77,18 @@ var iframe = document.getElementById("fullscreen-iframe");
       {isLoading && <span>Loading...</span>}
       {error && <span className="red">Có lỗi xảy ra trong quá trình tải</span>}
       {book && (
-        <iframe
-          src={`https://drive.google.com/file/d/${book.code}/preview`}
-          sandbox="allow-same-origin allow-scripts"
+        // <iframe
+        //   src={`https://drive.google.com/file/d/${book.code}/preview`}
+        //   sandbox="allow-same-origin allow-scripts"
+        //   id="fullscreen-iframe"
+        // ></iframe>
+        <embed
+          src={book?.code}
+          type="application/pdf"
+          width={100 + "%"}
+          height={100 + "%"}
           id="fullscreen-iframe"
-        ></iframe>
+        />
       )}
     </div>
   );

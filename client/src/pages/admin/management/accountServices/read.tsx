@@ -64,7 +64,7 @@ const read = () => {
           <div>
             <strong>Avatar: </strong>
           </div>
-          <img src={data.imageUrl} alt={data.username} />
+          <img src={data.imageUrl} alt={data.username} style={{width: "5rem", height: "5rem", borderRadius: "50%", border: "1px solid #ccc"}} />
         </div>
         <div className="btn-wrapper mt-2">
           <Link to={`/admin/account/delete/${id}`} className="btn-primary">

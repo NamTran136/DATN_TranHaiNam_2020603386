@@ -4,6 +4,7 @@ import axios from "axios";
 import {
   API_URL,
   ColumnProps,
+  COMMON,
   SortOrder,
   USER,
   UserPrivateDto,
@@ -12,6 +13,8 @@ import { Link } from "react-router-dom";
 import { FaCircleArrowUp } from "react-icons/fa6";
 import { useAppSelector } from "../../store/store";
 import Pagination from "../../components/public/Pagination";
+import { BsSearch } from "react-icons/bs";
+import { FaRegBell } from "react-icons/fa";
 
 type SortFunctionProps = {
   tableData: UserPrivateDto[];
@@ -44,7 +47,7 @@ function SortButton({
 
 const columns: ColumnProps<UserPrivateDto>[] = [
   {
-    Header: "ID",
+    Header: "S.No",
     value: "id",
   },
   {
@@ -141,6 +144,34 @@ const AccountService = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     setSortKey(key);
   }
+  const [searchInput, setSearchInput] = useState({
+    input: "",
+    index: "1",
+  });
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { data, status } = await axios.get(
+      API_URL +
+        COMMON +
+        `/searchuser=${searchInput.input}/${searchInput.index}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (status === 200) {
+      setData(data);
+      setSearchInput({
+        input: "",
+        index: "1",
+      });
+    } else {
+      console.log("An error occurred!");
+    }
+  };
   return (
     <div
       className="admin-container"
@@ -151,9 +182,62 @@ const AccountService = () => {
     >
       <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
       <main className="dashboard">
-        <div className="widget-container">
+        <div className="bar">
+          <form onSubmit={handleSubmit}>
+            <button type="submit">
+              <BsSearch />
+            </button>
+            <input
+              type="text"
+              placeholder="Search for data, users, docs"
+              value={searchInput.input}
+              onChange={(e) =>
+                setSearchInput({ ...searchInput, input: e.target.value })
+              }
+            />
+            <div className="select-container">
+              <label htmlFor="select">Search By:</label>
+              <select
+                value={searchInput.index}
+                id="select"
+                onChange={(e) =>
+                  setSearchInput({ ...searchInput, index: e.target.value })
+                }
+              >
+                <option value={1}>Username</option>
+                <option value={2}>Email</option>
+              </select>
+            </div>
+          </form>
+          <FaRegBell />
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXPodEp1Zyixlyx1Rrq6JJlPm0hgg1pFeLNrxgt2bkYw&s"
+            alt="User"
+          />
+        </div>
+        <div className="table-container">
           <div className="dashboard-category-box">
-            <h2 className="heading">List of Accounts</h2>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <h2 className="heading">List of Accounts</h2>
+              <button
+                style={{
+                  backgroundColor: "transparent",
+                  outline: "none",
+                  border: "none",
+                  fontSize: "20px",
+                  color: "rgb(0,115,255)",
+                }}
+                onClick={fetchData}
+              >
+                Refresh
+              </button>
+            </div>
 
             {isLoading && <span>Loading...</span>}
             {data && (
@@ -180,7 +264,7 @@ const AccountService = () => {
                     .slice((page - 1) * limit, (page - 1) * limit + limit)
                     .map((d, i) => (
                       <tr key={i}>
-                        <td>{d.id}</td>
+                        <td>{i + 1}</td>
                         <td>{d.username}</td>
                         <td>{d.email}</td>
                         <td>

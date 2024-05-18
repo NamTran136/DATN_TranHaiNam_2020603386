@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaRegBell } from "react-icons/fa";
 import { API_URL, BLOG, BlogDto } from "../../types";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Pagination from "../../components/public/Pagination";
+import { BsSearch } from "react-icons/bs";
 
 const Blogs = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -76,13 +77,22 @@ const Blogs = () => {
     >
       <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
       <main className="dashboard">
-        <div className="widget-container">
-          <Link to="/admin/blog/new" className="create-category-btn">
+        <div className="bar">
+          <BsSearch />
+          <input type="text" placeholder="Search for data, users, docs" />
+          <FaRegBell />
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXPodEp1Zyixlyx1Rrq6JJlPm0hgg1pFeLNrxgt2bkYw&s"
+            alt="User"
+          />
+        </div>
+        <div className="table-container">
+          <Link to="/admin/blog/new" className="create-category-btn" style={{top: "4.2rem"}}>
             <FaPlus />
           </Link>
 
           {/* Table  */}
-          <div className="table-container">
+          <div className="table-content">
             <h2 className="heading">List of Blogs</h2>
             {isLoading && <span>Loading...</span>}
 
@@ -108,7 +118,7 @@ const Blogs = () => {
                       .map((d, i) => (
                         <tr key={i}>
                           {/* S.No   */}
-                          <td>{d.id}</td>
+                          <td>{i + 1}</td>
                           {/* Blog Thumbnail  */}
                           <td scope="row">
                             {/* thumbnail  */}
@@ -139,7 +149,7 @@ const Blogs = () => {
                 />
               </div>
             )}
-            {error && <span className="red">{"..."+error}</span>}
+            {error && <span className="red">{"..." + error}</span>}
           </div>
         </div>
       </main>

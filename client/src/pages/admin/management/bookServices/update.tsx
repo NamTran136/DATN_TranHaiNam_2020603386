@@ -18,6 +18,7 @@ import {
 } from "firebase/storage";
 import { app } from "../../../../firebase";
 import toast from "react-hot-toast";
+import { hasImageExtension } from "../../../../utils/appUtils";
 
 const update = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const update = () => {
   const { id } = useParams();
   const [value, setValue] = useState<BookToEditDto>({
     id: 0,
-    code: "",
+    file: undefined,
     title: "",
     description: "",
     author: "",
@@ -37,14 +38,14 @@ const update = () => {
     isPrivate: false,
     category: "",
   });
+  const [linkBook, setLinkBook] = useState<string>("");
   const fetchData = () => {
     axios
       .get(API_URL + BOOK + "/" + id)
       .then((response) => {
         const book: BookDto = response.data;
-        setValue({
+        setValue({...value,
           id: book.id,
-          code: book.code,
           title: book.title,
           description: book.description,
           author: book.author,
@@ -53,6 +54,7 @@ const update = () => {
           isPrivate: book.isPrivate,
           category: book.category,
         });
+        setLinkBook(book.code);
       })
       .catch((err) => {
         console.log(err);
@@ -63,18 +65,18 @@ const update = () => {
   const handleBack = () => {
     navigate("/admin/books");
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios
-      .put(`${API_URL}${BOOK}`, value, {
+    await axios
+      .put(`${API_URL}${BOOK}/UploadFileUpdate`, value, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Accept: "application/json",
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
-        if (res.status === 204) {
+        if (res.status === 200) {
           toast.success("Edit this book successfully.");
         }
       })
@@ -139,15 +141,26 @@ const update = () => {
           e.stopPropagation();
         }}
       >
-        <h1>Add Book</h1>
+        <h1>Edit Book</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-wrapper">
-            <label htmlFor="code">Code</label>
+            <label htmlFor="file">File Book:</label>
+            <embed
+              src={linkBook}
+              type="application/pdf"
+              width={100 + "%"}
+              height={"400px"}
+            />
             <input
-              value={value.code}
-              type="text"
-              name="code"
-              onChange={(e) => setValue({ ...value, code: e.target.value })}
+              type="file"
+              onChange={(e) => {
+                if(e.target.files !== null){
+                  setValue({ ...value, file: e.target.files[0] });
+                  const url = URL.createObjectURL(e.target.files[0]);
+                  setLinkBook(url);
+                }
+                  
+              }}
             />
           </div>
           <div className="input-wrapper">
@@ -206,7 +219,7 @@ const update = () => {
             request.resource.size < 2 * 1024 * 1024 &&
             request.resource.contentType.matches("image/.*") */}
             <img
-              src={value.imageUrl || "/NoImage.png"}
+              src={hasImageExtension(value.imageUrl) ? value.imageUrl : "/NoImage.png"}
               alt=""
               className="profile-image"
               onClick={() => {

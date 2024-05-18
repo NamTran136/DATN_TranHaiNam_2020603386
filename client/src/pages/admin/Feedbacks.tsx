@@ -25,12 +25,19 @@ const Confirmation = () => {
 
   useEffect(() => {
     fetchData();
+    console.log(token);
   }, []);
 
   const fetchData = async () => {
     setIsLoading(true);
     await axios
-      .get(API_URL + FEEDBACK)
+      .get(API_URL + FEEDBACK, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         return response.data;
       })
@@ -152,7 +159,7 @@ const Confirmation = () => {
             alt="User"
           />
         </div>
-        <div className="widget-container">
+        <div className="table-container">
           <div className="dashboard-category-box">
             <h2 className="heading">Feedback</h2>
             {isLoading && <span>Loading...</span>}
@@ -174,7 +181,7 @@ const Confirmation = () => {
                           <h3>{d.title}</h3>
                           <div>{d.content}</div>
                           {d.isActive ? (
-                            <h4 style={{color: "blue"}}>Active</h4>
+                            <h4 style={{ color: "blue" }}>Active</h4>
                           ) : (
                             <h4>Proccessing</h4>
                           )}
@@ -182,8 +189,11 @@ const Confirmation = () => {
                       </div>
                       <div className="action-wrapper">
                         <div
-                          className='btn-feedback btn-active'
-                          style={{opacity: d.isActive ? '0.6' : '1', cursor: d.isActive ? 'default' : 'pointer'}}
+                          className="btn-feedback btn-active"
+                          style={{
+                            opacity: d.isActive ? "0.6" : "1",
+                            cursor: d.isActive ? "default" : "pointer",
+                          }}
                           onClick={() => {
                             if (!d.isActive) {
                               handleActiveFeedback(d.id);

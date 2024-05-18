@@ -3,9 +3,10 @@ import AdminSidebar from "../../components/admin/AdminSidebar";
 import axios from "axios";
 import { API_URL, CATEGORY, CategoryDto, ColumnProps, SortOrder } from "../../types";
 import { Link } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaRegBell } from "react-icons/fa";
 import { FaCircleArrowUp } from "react-icons/fa6";
 import Pagination from "../../components/public/Pagination";
+import { BsSearch } from "react-icons/bs";
 
 type SortFunctionProps = {
   tableData: CategoryDto[];
@@ -39,7 +40,7 @@ function SortButton({
 
 const columns: ColumnProps<CategoryDto>[] = [
   {
-    Header: "ID",
+    Header: "S.No",
     value: "id",
   },
   {
@@ -131,7 +132,16 @@ const CategoryService = () => {
     >
       <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
       <main className="dashboard">
-        <div className="widget-container">
+        <div className="bar">
+          <BsSearch />
+          <input type="text" placeholder="Search for data, users, docs" />
+          <FaRegBell />
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXPodEp1Zyixlyx1Rrq6JJlPm0hgg1pFeLNrxgt2bkYw&s"
+            alt="User"
+          />
+        </div>
+        <div className="table-container">
           <div className="dashboard-category-box">
             <h2 className="heading">List of Categories</h2>
 
@@ -160,7 +170,7 @@ const CategoryService = () => {
                     .slice((page - 1) * limit, (page - 1) * limit + limit)
                     .map((d, i) => (
                       <tr key={i}>
-                        <td>{d.id}</td>
+                        <td>{i + 1}</td>
                         <td>{d.name}</td>
                         <td className="btn-wrapper">
                           <Link

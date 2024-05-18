@@ -14,12 +14,10 @@ const protectedRoute = () => {
       if (now - parseInt(setupTime) > 24 * 60 * 60 * 1000) {
         localStorage.clear();
         dispatch(signOut());
-        console.log(1);
       } else {
         localStorage.getItem("token") !== undefined
           ? dispatch(signInSuccess(localStorage.getItem("token")))
           : dispatch(signOut());
-        console.log(2);
       }
     }
   }, []);

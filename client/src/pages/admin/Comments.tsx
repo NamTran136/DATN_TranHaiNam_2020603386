@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import { FaCircleArrowUp } from "react-icons/fa6";
 import { useAppSelector } from "../../store/store";
 import Pagination from "../../components/public/Pagination";
+import { FaRegBell } from "react-icons/fa";
+import { BsSearch } from "react-icons/bs";
 
 type SortFunctionProps = {
   tableData: CommentDto[];
@@ -44,7 +46,7 @@ function SortButton({
 
 const columns: ColumnProps<CommentDto>[] = [
   {
-    Header: "ID",
+    Header: "S.No",
     value: "id",
   },
   {
@@ -159,7 +161,16 @@ const [totalCount, setTotalCount] = useState(0);
     >
       <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
       <main className="dashboard">
-        <div className="widget-container">
+        <div className="bar">
+          <BsSearch />
+          <input type="text" placeholder="Search for data, users, docs" />
+          <FaRegBell />
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXPodEp1Zyixlyx1Rrq6JJlPm0hgg1pFeLNrxgt2bkYw&s"
+            alt="User"
+          />
+        </div>
+        <div className="table-container">
           <div className="dashboard-category-box">
             <h2 className="heading">List of Comments</h2>
 
@@ -188,7 +199,7 @@ const [totalCount, setTotalCount] = useState(0);
                     .slice((page - 1) * limit, (page - 1) * limit + limit)
                     .map((d, i) => (
                       <tr key={i}>
-                        <td>{d.id}</td>
+                        <td>{i + 1}</td>
                         <td>{d.content}</td>
                         <td>
                           <img

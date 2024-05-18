@@ -13,6 +13,7 @@ export const FBOOK = "FavouriteBook";
 export const WBOOK = "WatchedBook";
 export const FEEDBACK = "Feedback";
 export const BLOG = "Blogs";
+export const COMMON = "Common";
 
 export interface ColumnProps<T extends Object> {
   Header: string;
@@ -54,7 +55,7 @@ export type BookToAddDto = {
 };
 export type BookToEditDto = {
   id: number;
-  code: string;
+  file: any | undefined;
   title: string;
   description: string;
   author: string;

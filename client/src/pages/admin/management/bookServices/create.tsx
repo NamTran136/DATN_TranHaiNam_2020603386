@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { API_URL, BOOK, BookToAddDto, CATEGORY, CategoryDto,  } from "../../../../types";
+import { API_URL, BOOK,  BookToEditDto, CATEGORY, CategoryDto,  } from "../../../../types";
 import axios from "axios";
 import { useAppSelector } from "../../../../store/store";
 import {
@@ -14,8 +14,9 @@ import toast from "react-hot-toast";
 const create = () => {
     const navigate = useNavigate();
     const { token } = useAppSelector((state) => state.user);
-    const [value, setValue] = useState<BookToAddDto>({
-      code: "",
+    const [value, setValue] = useState<BookToEditDto>({
+      id: 0,
+      file: undefined,
       title: "",
       description: "",
       author: "",
@@ -47,35 +48,33 @@ const create = () => {
     const handleBack = () => {
         navigate("/admin/books");
     }
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      axios.post(`${API_URL}${BOOK}`, value, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
+      console.log(value);
+      const { status } = await axios.post(API_URL+BOOK+"/UploadFileAdd", value, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (status === 200) {
+          toast.success("Add a category successfully.");
+          setValue({
+            ...value,
+            file: undefined,
+            title: "",
+            description: "",
+            author: "",
+            language: "",
+            imageUrl: "",
+            isPrivate: false,
+            category: "Cổ tích - Thần thoại",
+          });
+          setImagePercent(0);
+        } else {
+          toast.error("Có lỗi xảy ra trong quá trình gửi");
         }
-      }).then(res => {
-        if(res.status === 204) {
-            toast.success("Add a category successfully.");
-            setValue({
-              ...value,
-              code: "",
-              title: "",
-              description: "",
-              author: "",
-              language: "",
-              imageUrl: "",
-              isPrivate: false,
-              category: "Cổ tích - Thần thoại",
-            });
-            setImagePercent(0);
-        }
-      })
-      .catch(err => {
-        console.log(err.message);
-        toast.error("Add a category unsuccessfully.");
-      });
     };
 
     const refUrl = useRef<HTMLInputElement>(null);
@@ -123,13 +122,14 @@ const create = () => {
         <h1>Add Book</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-wrapper">
-            <label htmlFor="code">Code</label>
+            <label htmlFor="file">File Book:</label>
             <input
-              value={value.code}
-              type="text"
-              name="code"
+              type="file"
               required
-              onChange={(e) => setValue({ ...value, code: e.target.value })}
+              onChange={(e) => {
+                e.target.files !== null &&
+                  setValue({ ...value, file: e.target.files[0] });
+              }}
             />
           </div>
           <div className="input-wrapper">

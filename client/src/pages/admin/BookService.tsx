@@ -1,11 +1,20 @@
 import { MouseEventHandler, useCallback, useEffect, useState } from "react";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import axios from "axios";
-import { API_URL, BOOK, BookDto, ColumnProps, SortOrder } from "../../types";
+import {
+  API_URL,
+  BOOK,
+  BookDto,
+  ColumnProps,
+  COMMON,
+  SortOrder,
+} from "../../types";
 import { Link } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaRegBell } from "react-icons/fa";
 import { FaCircleArrowUp } from "react-icons/fa6";
 import Pagination from "../../components/public/Pagination";
+import { BsSearch } from "react-icons/bs";
+import { useAppSelector } from "../../store/store";
 
 type SortFunctionProps = {
   tableData: BookDto[];
@@ -42,32 +51,12 @@ const columns: ColumnProps<BookDto>[] = [
     value: "title",
   },
   {
-    Header: "Code",
-    value: "code",
-  },
-  {
     Header: "Author",
     value: "author",
   },
   {
-    Header: "Language",
-    value: "language",
-  },
-  {
-    Header: "Description",
-    value: "description",
-  },
-  {
     Header: "Image",
     value: "imageUrl",
-  },
-  {
-    Header: "Downloads",
-    value: "numOfDownloads",
-  },
-  {
-    Header: "Views",
-    value: "numOfViews",
   },
   {
     Header: "State",
@@ -80,6 +69,7 @@ const columns: ColumnProps<BookDto>[] = [
 ];
 
 const BookService = () => {
+  const { token } = useAppSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [isFold, setIsFold] = useState(false);
   const [data, setData] = useState<BookDto[]>([]);
@@ -150,6 +140,34 @@ const BookService = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     setSortKey(key);
   }
+  const [searchInput, setSearchInput] = useState({
+    input: "",
+    index: "1",
+  });
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { data, status } = await axios.get(
+      API_URL +
+        COMMON +
+        `/searchinput=${searchInput.input}/${searchInput.index}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (status === 200) {
+      setData(data);
+      setSearchInput({
+        input: "",
+        index: "1",
+      });
+    } else {
+      console.log("An error occurred!");
+    }
+  };
   return (
     <div
       className="admin-container"
@@ -160,9 +178,64 @@ const BookService = () => {
     >
       <AdminSidebar isFold={isFold} setIsFold={setIsFold} />
       <main className="dashboard">
-        <div className="widget-container">
+        <div className="bar">
+          <form onSubmit={handleSubmit}>
+            <button type="submit">
+              <BsSearch />
+            </button>
+            <input
+              type="text"
+              placeholder="Search for data, users, docs"
+              value={searchInput.input}
+              onChange={(e) =>
+                setSearchInput({ ...searchInput, input: e.target.value })
+              }
+            />
+            <div className="select-container">
+              <label htmlFor="select">Search By:</label>
+              <select
+                value={searchInput.index}
+                id="select"
+                onChange={(e) =>
+                  setSearchInput({ ...searchInput, index: e.target.value })
+                }
+              >
+                <option value={1}>ID</option>
+                <option value={2}>Title</option>
+                <option value={3}>Author</option>
+                <option value={4}>Category</option>
+              </select>
+            </div>
+          </form>
+          <FaRegBell />
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXPodEp1Zyixlyx1Rrq6JJlPm0hgg1pFeLNrxgt2bkYw&s"
+            alt="User"
+          />
+        </div>
+        <div className="table-container">
           <div className="dashboard-category-box">
-            <h2 className="heading">List of Books</h2>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <h2 className="heading">List of Books</h2>
+              <button
+                style={{
+                  backgroundColor: "transparent",
+                  outline: "none",
+                  border: "none",
+                  fontSize: "20px",
+                  color: "rgb(0,115,255)",
+                }}
+                onClick={fetchData}
+              >
+                Refresh
+              </button>
+            </div>
 
             {isLoading && <span>Loading...</span>}
             {data && (
@@ -190,15 +263,10 @@ const BookService = () => {
                     .map((d, i) => (
                       <tr key={i}>
                         <td>{d.title}</td>
-                        <td>{d.code}</td>
                         <td>{d.author}</td>
-                        <td>{d.language}</td>
-                        <td>{d.description}</td>
                         <td>
                           <img src={d.imageUrl} alt="Image Book" />
                         </td>
-                        <td>{d.numOfDownloads}</td>
-                        <td>{d.numOfViews}</td>
                         <td>{d.isPrivate ? "Private" : "Public"}</td>
                         <td>{d.category}</td>
                         <td
@@ -233,13 +301,15 @@ const BookService = () => {
                 </tbody>
               </table>
             )}
-            <Pagination
-              totalPages={totalCount}
-              page={page}
-              limit={limit}
-              siblings={1}
-              onPageChange={handlePageChange}
-            />
+            {data.length > 5 && (
+              <Pagination
+                totalPages={totalCount}
+                page={page}
+                limit={limit}
+                siblings={1}
+                onPageChange={handlePageChange}
+              />
+            )}
             {error && <span className="red">Có lỗi khi tải</span>}
           </div>
         </div>

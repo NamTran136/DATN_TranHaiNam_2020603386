@@ -96,10 +96,15 @@ const read = () => {
               </div>
             </div>
             <div className="separate">{""}</div>
-            <iframe
-              src={`https://drive.google.com/file/d/${value.code}/preview`}
-              allow="autoplay"
-            ></iframe>
+            <div style={{padding: "2rem 20%"}}>
+              <embed
+                src={value?.code}
+                type="application/pdf"
+                width={100 + "%"}
+                height={"500px"}
+                style={{ textAlign: "center" }}
+              />
+            </div>
             <div className="separate">{""}</div>
             <div className="book-description-wrapper">
               <div className="book-description-title">{value?.title}</div>

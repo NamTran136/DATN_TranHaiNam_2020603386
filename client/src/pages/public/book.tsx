@@ -19,6 +19,7 @@ import {
 } from "react-share";
 import { AiOutlineDownload } from "react-icons/ai";
 import { IoEyeOutline } from "react-icons/io5";
+import { TimeString } from "../../utils/appUtils";
 
 const shareUrl = window.location.href;
 const title = "Share book"
@@ -118,7 +119,7 @@ const book = () => {
     setIsLiked(!isLiked);
   };
 
-  const HandleDownload = async () => {
+  const handleDownload = async () => {
     await axios
       .put(
         API_URL + BOOK + "/downloadingbook",
@@ -134,8 +135,37 @@ const book = () => {
           },
         }
       )
-      .then((response) => {
-        console.log(response.status);
+      .then(async (response) => {
+        if(response.status === 204) {
+          await axios({
+            url: `${API_URL}${BOOK}/DownloadFile/${bookId}`,
+            method: "GET",
+            responseType: "blob", // important
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          })
+            .then((response) => {
+              const type = response.data.type.split("/")[1];
+              const url = window.URL.createObjectURL(new Blob([response.data]));
+              const link = document.createElement("a");
+              link.href = url;
+              console.log(url);
+              link.setAttribute(
+                "download",
+                `${TimeString()}-downloadedFile.${type}`
+              );
+              document.body.appendChild(link);
+              link.click();
+              toast.success("Download file successfully");
+            })
+            .catch((ex) => {
+              console.log(ex);
+              toast.error("Download file failed");
+            });
+        }
         fetchData();
       })
       .catch((err) => {
@@ -234,8 +264,7 @@ const book = () => {
                         className="bg-red text-white"
                         onClick={() => {
                           if (user.email) {
-                            HandleDownload();
-                            window.location.href = `https://drive.google.com/uc?export=download&id=${book?.code}`;
+                            handleDownload();
                           } else {
                             toast.error(
                               "Vui lòng đăng nhập trước khi tải sách"
